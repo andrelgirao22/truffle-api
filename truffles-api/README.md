@@ -5,7 +5,7 @@
 	* MySQL 5.7
 		Workbench 6.3.9
 	* Oracle JDK 1.8.0_66
-	* Eclipse >= Neon
+	* Eclipse >=  Oxygen.2
 		UTF-8
 			Eclipse -> General -> Workspace -> UTF-8
 
@@ -15,11 +15,11 @@
 	
 	Resources -> Service -> JPA -> integração
 	
-	Apresentação: ui, api
+	Apresentação: ui(Angular 4), api
 	Negócio: modelos, dominios
 	Integração: consultas em banco de dados.
 
-	Java, Spring Boot, Spring MVC, String JPA, Rest
+	Java, Spring Boot, Spring JPA, Rest, Angular 4
 	
 	Negocio
 		Spring IoC
