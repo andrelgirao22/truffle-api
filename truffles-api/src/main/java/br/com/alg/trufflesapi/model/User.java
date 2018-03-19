@@ -40,7 +40,7 @@ public class User {
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	
-	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinTable(name="tb_user_groups",
 			joinColumns= @JoinColumn(name= "id_user", referencedColumnName = "id_user"),
 			inverseJoinColumns= @JoinColumn(name="id_group", referencedColumnName="id_group"))
