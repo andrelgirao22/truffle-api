@@ -41,7 +41,7 @@ public class Order {
 	
 	@OneToMany(mappedBy="order")
 	private List<Payment> payments;
-	
+
 	@OneToOne
 	@JoinColumn(name="id_account")
 	private Account account;
@@ -100,5 +100,5 @@ public class Order {
 
 	public void setPayments(List<Payment> payments) {
 		this.payments = payments;
-	}	
+	}		
 }

@@ -2,6 +2,7 @@ package br.com.alg.trufflesapi.model;
 
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -15,25 +16,28 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table(name="tb_user")
 public class User {
-
-	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_user")
 	private Long id;
 	
+	@NotEmpty
 	@Column(name="tx_email", unique=true)
 	private String email;
 	
+	@NotEmpty
 	@Column(name="tx_password")
-	@JsonIgnore
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	
 	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
@@ -68,6 +72,7 @@ public class User {
 		this.email = email;
 	}
 
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}
@@ -91,6 +96,11 @@ public class User {
 
 	public void setGroups(List<Group> groups) {
 		this.groups = groups;
+	}
+	
+	public void addGroup(Group group) {
+		if(groups == null) groups = new ArrayList<>();
+		this.groups.add(group);
 	}
 
 	public String getUserImage() {

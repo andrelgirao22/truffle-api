@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.alg.trufflesapi.model.Delivery;
 import br.com.alg.trufflesapi.model.Order;
 import br.com.alg.trufflesapi.model.OrderItem;
 import br.com.alg.trufflesapi.model.Payment;
+import br.com.alg.trufflesapi.services.DeliveryService;
 import br.com.alg.trufflesapi.services.OrderService;
 
 @RestController
@@ -32,6 +34,9 @@ public class OrderResource {
 
 	@Autowired
 	private OrderService service;
+	
+	@Autowired
+	private DeliveryService deliveryService;
 	
 	@GetMapping
 	public ResponseEntity<List<Order>> listItem() {
@@ -84,6 +89,15 @@ public class OrderResource {
 		List<OrderItem> list = this.service.findItensByOrder(order);
 		CacheControl cacheControl = CacheControl.maxAge(20, TimeUnit.SECONDS);
 		return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(list);
+	}
+	
+	@GetMapping(value="/{id}/delivery")
+	public ResponseEntity<?> findDeliveryByOrder(@PathVariable("id") Long id) {
+		Order order = this.service.find(id);
+		Delivery delivery = this.deliveryService.findDeliveryByOrder(order);
+		CacheControl cacheControl = CacheControl.maxAge(20, TimeUnit.SECONDS);
+		return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(delivery);
+		
 	}
 	
 	@GetMapping(value= "/{id}/payment")

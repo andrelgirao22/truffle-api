@@ -26,6 +26,7 @@ public class Delivery {
 	@DateTimeFormat(pattern	="dd/MM/yyyy")
 	private Date date;
 	
+
 	@OneToOne
 	@JoinColumn(name="id_order")
 	private Order order;
@@ -49,19 +50,19 @@ public class Delivery {
 		this.date = date;
 	}
 
-	public Order getOrder() {
-		return order;
-	}
-
-	public void setOrder(Order order) {
-		this.order = order;
-	}
-
 	public boolean isStatus() {
 		return status;
 	}
 
 	public void setStatus(boolean status) {
 		this.status = status;
+	}
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
 	}	
 }

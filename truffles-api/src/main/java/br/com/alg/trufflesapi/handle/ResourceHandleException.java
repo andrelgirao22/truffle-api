@@ -15,12 +15,22 @@ import br.com.alg.trufflesapi.exceptions.Erro;
 import br.com.alg.trufflesapi.exceptions.ItemNotFoundException;
 import br.com.alg.trufflesapi.exceptions.OrderNotFoundException;
 import br.com.alg.trufflesapi.exceptions.PaymentInvalidException;
+import br.com.alg.trufflesapi.exceptions.PriceNotFoudException;
+import br.com.alg.trufflesapi.exceptions.UserException;
 
 @ControllerAdvice
 public class ResourceHandleException {
 
 	@ExceptionHandler(CredentiaisInvalidException.class)
 	public ResponseEntity<Erro> handleInvalidLoginException(CredentiaisInvalidException e,
+			HttpServletRequest request) {
+		Erro erro = new Erro();
+		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+	}
+	
+	@ExceptionHandler(UserException.class)
+	public ResponseEntity<Erro> handleAccountNotFoudException(UserException e,
 			HttpServletRequest request) {
 		Erro erro = new Erro();
 		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());
@@ -37,6 +47,14 @@ public class ResourceHandleException {
 	
 	@ExceptionHandler(ItemNotFoundException.class)
 	public ResponseEntity<Erro> handleItemNotFoundException(ItemNotFoundException e,
+			HttpServletRequest request) {
+		Erro erro = new Erro();
+		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+	}
+	
+	@ExceptionHandler(PriceNotFoudException.class)
+	public ResponseEntity<Erro> handlePriceNotFoundException(PriceNotFoudException e,
 			HttpServletRequest request) {
 		Erro erro = new Erro();
 		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());

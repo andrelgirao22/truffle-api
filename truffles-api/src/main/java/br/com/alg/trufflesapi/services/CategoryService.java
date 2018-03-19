@@ -6,7 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.alg.trufflesapi.exceptions.UserNotFoundException;
+import br.com.alg.trufflesapi.exceptions.CategoryNotFoundException;
+import br.com.alg.trufflesapi.exceptions.UserException;
 import br.com.alg.trufflesapi.model.Category;
 import br.com.alg.trufflesapi.repositories.CategoryRepository;
 
@@ -26,25 +27,19 @@ public class CategoryService {
 	}
 
 	public void update(Category category) {
-		checkExist(category.getId());
+		Category oldCategory = find(category.getId());
+		category.setDate(oldCategory.getDate());
 		repository.save(category);
 	}
 
 	public void delete(Long id) {
-		checkExist(id);
+		find(id);
 		repository.deleteById(id);
 	}
 	
-	private void checkExist(Long id) {
-		find(id);
-	}
 	
 	public Category find(Long id) {
-		Category category = repository.findById(id).get();
-		if(category == null) {
-			throw new UserNotFoundException("Usuário Inválido.");
-		}
-		return category;
+		return repository.findById(id).orElseThrow(new CategoryNotFoundException(""));
 	}
 	
 	

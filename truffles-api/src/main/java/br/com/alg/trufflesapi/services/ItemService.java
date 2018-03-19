@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.alg.trufflesapi.exceptions.ItemNotFoundException;
+import br.com.alg.trufflesapi.exceptions.PriceNotFoudException;
 import br.com.alg.trufflesapi.model.Item;
 import br.com.alg.trufflesapi.model.Price;
 import br.com.alg.trufflesapi.repositories.ItemRepository;
@@ -43,16 +44,22 @@ public class ItemService {
 	public Item find(Long id) {
 		return repository.findById(id).orElseThrow(new ItemNotFoundException("Item não encontrado."));
 	}
-
+	
+	public List<Price> findPrices(Item item) {
+		return 
+				priceRepository.findByItem(item).orElseThrow((new PriceNotFoudException("Item " + item.getId() + " " + item.getName()  + " sem preço ")));
+	}
+	
 	public Price saveItemPrice(Price price, Long id) {
 		Item item = find(id);
 		price.setItem(item);
+		price.setDtStart(new Date());
 		return priceRepository.save(price);
 	}
 	
 	public List<Price> findPriceByItem(Item item) {
 		item = find(item.getId());
-		return this.priceRepository.findByItem(item);
+		return this.findPrices(item);
 	}
 	
 	

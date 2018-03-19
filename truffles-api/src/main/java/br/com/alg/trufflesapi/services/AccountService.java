@@ -1,5 +1,6 @@
 package br.com.alg.trufflesapi.services;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class AccountService {
 		
 		User user = userService.find(account.getUser().getId());
 		account.setUser(user);
+		account.setDtStart(new Date());
 		
 		return repository.save(account);
 	}

@@ -36,6 +36,10 @@ public class GroupService {
 	public Group find(Long id) {
 		return repository.findById(id).orElseThrow(new GroupNotFoundException("Grupo não encontrado."));
 	}
+	
+	public Group findByIdOrName(Long id, String name) {
+		return repository.findByIdOrName(id, name).orElseThrow(new GroupNotFoundException("Grupo não encontrado."));
+	}
 
 	public Group findById(Long id) {
 		return this.find(id);

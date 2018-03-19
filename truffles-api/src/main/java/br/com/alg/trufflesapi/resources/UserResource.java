@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.alg.trufflesapi.model.Group;
 import br.com.alg.trufflesapi.model.User;
 import br.com.alg.trufflesapi.services.UserService;
 
@@ -38,7 +39,7 @@ public class UserResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void> save(@Valid @RequestBody User user, @RequestParam(name="token") String token,
+	public ResponseEntity<Void> save(@Valid @RequestBody User user,
 			@RequestParam(value = "urlPhoto", required = false) MultipartFile image) {
 		
 		user = service.save(user, image);
@@ -48,7 +49,7 @@ public class UserResource {
 	}
 	
 	@PutMapping(value="{id}")
-	public ResponseEntity<Void> update(@RequestBody User user, @PathVariable("id") Long id, @RequestParam("token") String token) {
+	public ResponseEntity<Void> update(@RequestBody User user, @PathVariable("id") Long id) {
 		user.setId(id);
 		service.update(user);
 		return ResponseEntity.noContent().build();
@@ -58,14 +59,14 @@ public class UserResource {
 	public ResponseEntity<?> busca(@PathVariable("email") String email, 
 			@RequestParam("token") String token, @RequestParam("password") String password) {
 		User user = service.findByEmail(email);
-		service.validateUser(user, password);
+		//service.validateUser(user, password);
 		
 		CacheControl cacheControl = CacheControl.maxAge(20, TimeUnit.SECONDS);
 		return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(user);
 	}
 	
 	@GetMapping(value= "/{id}")
-	public ResponseEntity<?> busca(@PathVariable("id") Long id, @RequestParam("token") String token) {
+	public ResponseEntity<?> busca(@PathVariable("id") Long id) {
 		User user = service.find(id);
 		CacheControl cacheControl = CacheControl.maxAge(20, TimeUnit.SECONDS);
 		return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(user);
