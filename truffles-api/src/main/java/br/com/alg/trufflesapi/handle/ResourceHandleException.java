@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import br.com.alg.trufflesapi.exceptions.AccountNotFoundException;
+import br.com.alg.trufflesapi.exceptions.CategoryNotFoundException;
 import br.com.alg.trufflesapi.exceptions.CredentiaisInvalidException;
 import br.com.alg.trufflesapi.exceptions.Erro;
 import br.com.alg.trufflesapi.exceptions.ItemNotFoundException;
@@ -39,6 +40,14 @@ public class ResourceHandleException {
 	
 	@ExceptionHandler(AccountNotFoundException.class)
 	public ResponseEntity<Erro> handleAccountNotFoudException(AccountNotFoundException e,
+			HttpServletRequest request) {
+		Erro erro = new Erro();
+		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+	}
+	
+	@ExceptionHandler(CategoryNotFoundException.class)
+	public ResponseEntity<Erro> handleCategoryNotFoudException(CategoryNotFoundException e,
 			HttpServletRequest request) {
 		Erro erro = new Erro();
 		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());

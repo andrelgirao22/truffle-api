@@ -3,11 +3,14 @@ package br.com.alg.trufflesapi.services;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.alg.trufflesapi.exceptions.ItemNotFoundException;
 import br.com.alg.trufflesapi.exceptions.PriceNotFoudException;
+import br.com.alg.trufflesapi.model.Category;
 import br.com.alg.trufflesapi.model.Item;
 import br.com.alg.trufflesapi.model.Price;
 import br.com.alg.trufflesapi.repositories.ItemRepository;
@@ -21,6 +24,9 @@ public class ItemService {
 	
 	@Autowired
 	private PriceRepository priceRepository;
+	
+	@Autowired
+	private CategoryService categoryService;
 
 	public List<Item> listAll() {
 		return repository.findAll();
@@ -60,6 +66,11 @@ public class ItemService {
 	public List<Price> findPriceByItem(Item item) {
 		item = find(item.getId());
 		return this.findPrices(item);
+	}
+
+	public List<Item> findByCategory(@Valid Long id) {
+		Category category = this.categoryService.find(id);  
+		return this.repository.findByCategory(category);
 	}
 	
 	

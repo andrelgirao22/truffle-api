@@ -81,3 +81,28 @@
 	Ex.:
 		TruffleNotFoundException
 		
+## Escopo Api
+# Entidades (api) 
+ 
+ Criar Grupo.
+ Criar Categoria.
+ Criar usuario.
+ Criar conta.
+ Criar informações da conta.
+ Criar Item.
+ Criar preço do item.
+ Criar pedido.
+ criar item do pedido.
+ criar entrega do pedido.
+ criar pagamento.
+ 
+ # App (Telas)
+  - Lista de Produtos disponíveis para venda.
+  - Carrinho de compra.
+  - Cadastro de usuário
+  - Login.
+  - Forma de Pagamento.
+  - Lista de pedidos.
+ 
+	
+		

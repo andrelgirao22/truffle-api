@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.alg.trufflesapi.exceptions.CategoryNotFoundException;
-import br.com.alg.trufflesapi.exceptions.UserException;
 import br.com.alg.trufflesapi.model.Category;
 import br.com.alg.trufflesapi.repositories.CategoryRepository;
 
@@ -39,7 +38,7 @@ public class CategoryService {
 	
 	
 	public Category find(Long id) {
-		return repository.findById(id).orElseThrow(new CategoryNotFoundException(""));
+		return repository.findById(id).orElseThrow(new CategoryNotFoundException("Categoria não encontrada"));
 	}
 	
 	

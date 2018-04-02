@@ -47,7 +47,6 @@ public class Item {
 	@DateTimeFormat(pattern	="dd/MM/yyyy") 
 	private Date date;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy="item", fetch=FetchType.LAZY)
 	private List<Price> prices;
 	
