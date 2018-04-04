@@ -2,6 +2,7 @@ package br.com.alg.trufflesapi.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
@@ -43,6 +44,13 @@ public class ItemResource {
 	public ResponseEntity<List<Price>> listPricesByItem(@Valid @PathVariable("id") Long id) {
 		Item item = this.service.find(id);
 		return ResponseEntity.status(HttpStatus.OK).body(service.findPriceByItem(item));
+	}
+	
+	@GetMapping("/{id}/image")
+	public ResponseEntity<Map<String, String>> getImageByItem(@PathVariable("id") Long id) {
+		Map<String, String> jsonMap = this.service.getImage(id);
+		return ResponseEntity.status(HttpStatus.OK).body(jsonMap);
+		
 	}
 	
 	@GetMapping("/category/{id}")

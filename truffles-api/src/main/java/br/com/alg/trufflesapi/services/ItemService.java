@@ -1,7 +1,12 @@
 package br.com.alg.trufflesapi.services;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -73,5 +78,24 @@ public class ItemService {
 		return this.repository.findByCategory(category);
 	}
 	
+	public Map<String, String> getImage(Long id) {
+		
+		try {
+			
+			ClassLoader classLoader = getClass().getClassLoader();
+			File file = new File(classLoader.getResource("img/" + id + ".jpeg").getFile());
+			
+			String encodeImage = Base64.getEncoder().withoutPadding().encodeToString(Files.readAllBytes(file.toPath()));
+			
+			Map<String, String> jsonMap = new HashMap<>();
+			jsonMap.put("image", encodeImage);
+			
+			return jsonMap;
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
 	
 }
