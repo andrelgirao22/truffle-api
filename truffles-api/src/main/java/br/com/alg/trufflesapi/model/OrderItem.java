@@ -41,7 +41,7 @@ public class OrderItem {
 	
 	@Column(name="vl_amount")
 	@NumberFormat(pattern="#,##0.00")
-	private Double amount;
+	private Double quantity;
 	
 	@Column(name="vl_value")
 	@NumberFormat(pattern="#,##0.00")
@@ -82,12 +82,12 @@ public class OrderItem {
 		this.order = order;
 	}
 
-	public Double getAmount() {
-		return amount;
+	public Double getQuantity() {
+		return quantity;
 	}
 
-	public void setAmount(Double amount) {
-		this.amount = amount;
+	public void setQuantity(Double quantity) {
+		this.quantity = quantity;
 	}
 
 	public Double getValue() {

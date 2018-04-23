@@ -23,6 +23,9 @@ public class Category {
 	@Column(name="tx_name")
 	private String name;
 	
+	@Column(name="tx_image")
+	private String image;
+	
 	@Column(name="dt_category")
 	@DateTimeFormat(pattern	="dd/MM/yyyy") 
 	private Date date;
@@ -49,6 +52,14 @@ public class Category {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 }

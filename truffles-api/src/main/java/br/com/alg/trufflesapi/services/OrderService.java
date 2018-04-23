@@ -47,25 +47,34 @@ public class OrderService {
 			order.setAccount(account);
 		}
 		
+		List<OrderItem> orderItens = order.getOrderItens();
+		List<Payment> payments = order.getPayments();
+		
+		order.setOrderItens(null);
+		order.setPayments(null);
 		order.setDate(new Date());
-		return orderRepository.save(order);
+		Order newOrder = orderRepository.save(order);
+		
+		orderItens.forEach(orderItem ->  {			
+			this.save(orderItem, newOrder.getId());
+		});
+		
+		payments.forEach(payment -> {
+			this.save(payment, newOrder.getId());
+		});
+		
+		return newOrder;
 	}
 	
 	public OrderItem save(OrderItem orderItem, Long id) {
 		Order order =  find(id);
 		orderItem.setOrder(order);
 		orderItem.setDate(new Date());
-		
-		Item item = this.itemService.find(orderItem.getItem().getId());
-		
-		//TODO: verificar qual preço pegar
-		Price price = this.itemService.findPriceByItem(item).get(0);
-		Double itemValue = price.getPrice() * orderItem.getAmount();
-		orderItem.setValue(itemValue);
+		orderItem.setValue(orderItem.getValue());
 		
 		orderItem = this.orderItemRepository.save(orderItem);
 		
-		order = find(id);
+		order.addOrderItem(orderItem);
 		order.setOrderValue(getTotalOrder(order));
 		
 		this.orderRepository.save(order);
@@ -75,7 +84,7 @@ public class OrderService {
 
 	public Payment save(Payment payment, Long id) {
 		Order order =  find(id);
-		checkPayment(payment, order);
+		//checkPayment(payment, order);
 		payment.setOrder(order);
 		payment.setDataPayment(new Date());
 		return paymentRepository.save(payment);
@@ -96,7 +105,11 @@ public class OrderService {
 	}
 	
 	public Double getTotalPaymentOrder(Order order) {
-		return order.getPayments().stream().mapToDouble(oi -> oi.getValue()).sum();
+		return 
+			order.getPayments()
+				.stream()
+				.filter(payment -> payment.getValue() != null)
+				.mapToDouble(oi -> oi.getValue()).sum();
 	}
 	
 	public Order find(Long id) {

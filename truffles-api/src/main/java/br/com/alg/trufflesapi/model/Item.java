@@ -35,9 +35,8 @@ public class Item {
 	@Column(name="tx_description")
 	private String description;
 	
-	@JsonIgnore
-	@Column(name="tx_url_photo")
-	private String urlPhoto;
+	@Column(name="tx_image")
+	private String image;
 	
 	@Column(name="tx_status")
 	@Enumerated(EnumType.STRING)
@@ -80,13 +79,13 @@ public class Item {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public String getUrlPhoto() {
-		return urlPhoto;
+	
+	public String getImage() {
+		return image;
 	}
 
-	public void setUrlPhoto(String urlPhoto) {
-		this.urlPhoto = urlPhoto;
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	public String getDescription() {

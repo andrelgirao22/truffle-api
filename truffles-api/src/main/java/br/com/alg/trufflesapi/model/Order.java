@@ -1,5 +1,6 @@
 package br.com.alg.trufflesapi.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -68,6 +69,11 @@ public class Order {
 
 	public void setOrderItens(List<OrderItem> orderItens) {
 		this.orderItens = orderItens;
+	}
+	
+	public void addOrderItem(OrderItem orderItem) {
+		if(this.orderItens == null) this.orderItens = new ArrayList<OrderItem>();
+		this.orderItens.add(orderItem);
 	}
 
 	public Double getOrderValue() {

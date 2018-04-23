@@ -78,12 +78,12 @@ public class ItemService {
 		return this.repository.findByCategory(category);
 	}
 	
-	public Map<String, String> getImage(Long id) {
+	public Map<String, String> getImage(String image) {
 		
 		try {
 			
 			ClassLoader classLoader = getClass().getClassLoader();
-			File file = new File(classLoader.getResource("img/" + id + ".jpeg").getFile());
+			File file = new File(classLoader.getResource("img/" + image).getFile());
 			
 			String encodeImage = Base64.getEncoder().withoutPadding().encodeToString(Files.readAllBytes(file.toPath()));
 			

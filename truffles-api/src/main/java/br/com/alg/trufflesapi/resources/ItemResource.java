@@ -46,10 +46,12 @@ public class ItemResource {
 		return ResponseEntity.status(HttpStatus.OK).body(service.findPriceByItem(item));
 	}
 	
-	@GetMapping("/{id}/image")
-	public ResponseEntity<Map<String, String>> getImageByItem(@PathVariable("id") Long id) {
-		Map<String, String> jsonMap = this.service.getImage(id);
-		return ResponseEntity.status(HttpStatus.OK).body(jsonMap);
+	@GetMapping("/{image}/image")
+	public ResponseEntity<Map<String, String>> getImageByItem(@PathVariable("image") String image) {
+		Map<String, String> jsonMap = this.service.getImage(image);
+		
+		CacheControl cacheControl = CacheControl.maxAge(60, TimeUnit.SECONDS);
+		return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(jsonMap);
 		
 	}
 	
