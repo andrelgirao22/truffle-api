@@ -2,7 +2,6 @@ package br.com.alg.trufflesapi.model;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,6 +26,24 @@ public class Account {
 	@JoinColumn(name="id_user")
 	private User user;
 	
+	@Column(name="tx_address_name")
+	private String addressName;
+	
+	@Column(name="tx_address_number")
+	private String addressNumber;
+	
+	@Column(name="tx_neighborhood")
+	private String neighborhood;
+	
+	@Column(name="tx_city")
+	private String city;
+	
+	@Column(name="tx_state")
+	private String state;
+	
+	@Column(name="tx_compl")
+	private String complement;
+
 	@Column(name="dt_start")
 	@DateTimeFormat(pattern	="dd/MM/yyyy") 
 	private Date dtStart;
@@ -38,9 +55,7 @@ public class Account {
 	@Column(name="bl_status")
 	private boolean status;
 	
-	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="id_infor_account")
-	private AccountInfo infoAccount;
+	
 
 	public Long getId() {
 		return id;
@@ -82,11 +97,51 @@ public class Account {
 		this.id = id;
 	}
 
-	public AccountInfo getInfoAccount() {
-		return infoAccount;
+	public String getAddressName() {
+		return addressName;
 	}
 
-	public void setInfoAccount(AccountInfo infoAccount) {
-		this.infoAccount = infoAccount;
+	public void setAddressName(String addressName) {
+		this.addressName = addressName;
+	}
+
+	public String getAddressNumber() {
+		return addressNumber;
+	}
+
+	public void setAddressNumber(String addressNumber) {
+		this.addressNumber = addressNumber;
+	}
+
+	public String getNeighborhood() {
+		return neighborhood;
+	}
+
+	public void setNeighborhood(String neighborhood) {
+		this.neighborhood = neighborhood;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getComplement() {
+		return complement;
+	}
+
+	public void setComplement(String complement) {
+		this.complement = complement;
 	}
 }

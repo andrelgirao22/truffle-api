@@ -51,7 +51,6 @@ public class User {
 	
 	@Column(name="tx_image_user")
 	private String userImage;
-
 	
 	@Column(name="ts_last_password_reset")
 	private Timestamp lastPasswordResetDate;
