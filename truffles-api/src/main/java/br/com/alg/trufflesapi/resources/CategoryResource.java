@@ -21,13 +21,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.alg.trufflesapi.model.Category;
 import br.com.alg.trufflesapi.services.CategoryService;
 
 @RestController
-@CrossOrigin("${origin-permited}")
+@CrossOrigin(origins="${origin-permited}")
 @RequestMapping("/category")
 public class CategoryResource {
 
@@ -46,6 +47,17 @@ public class CategoryResource {
 		category = service.save(category);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(category.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
+	
+	@PostMapping(value="/image/{id}")
+	public ResponseEntity<Void> saveImage(@Valid @RequestParam(value="file", required=false) MultipartFile file,  @PathVariable(value="id", required= false) String id) {
+		
+		if(file == null) return null;
+		
+		service.saveImage(id, file);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}").buildAndExpand("Sucesso").toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	
@@ -72,7 +84,7 @@ public class CategoryResource {
 	
 	
 	@DeleteMapping(value= "/{id}")
-	public ResponseEntity<Void> deletar(@PathVariable("id") Long id, @RequestParam("token") String token) {
+	public ResponseEntity<Void> deletar(@PathVariable("id") Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
