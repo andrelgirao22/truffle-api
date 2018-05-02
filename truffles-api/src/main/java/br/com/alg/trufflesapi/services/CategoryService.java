@@ -49,11 +49,7 @@ public class CategoryService {
 
 	public void delete(Long id) {
 		
-		try {
-			removeOldImage(id + "");
-		} catch (IOException e) {
-			throw new RuntimeException(e.getMessage());
-		}
+		removeOldImage(id + "");
 		
 		find(id);
 		repository.deleteById(id);
@@ -104,14 +100,18 @@ public class CategoryService {
 		}
 	}
 
-	private void removeOldImage(String image) throws IOException {
+	private void removeOldImage(String image) {
 		
 		if(image == null) return ;
 
-		Category category = find(Long.valueOf(image));
-		
-		Path path = Paths.get("imagens/" + category.getImage());
-		Files.delete(path);
+		try {
+			Category category = find(Long.valueOf(image));
+			
+			Path path = Paths.get("imagens/" + category.getImage());
+			Files.delete(path);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 	}
 	
