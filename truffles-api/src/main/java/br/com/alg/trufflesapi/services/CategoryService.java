@@ -65,7 +65,7 @@ public class CategoryService {
 		
 		try {
 			
-			Path path = Paths.get("imagens/" + image);
+			Path path = Paths.get("imagens/category/" + image);
 			
 			File file = path.toFile();
 			
@@ -88,7 +88,7 @@ public class CategoryService {
 			
 			removeOldImage(id);
 			
-			Path path = Paths.get("imagens/" + file.getOriginalFilename());
+			Path path = Paths.get("imagens/category" + file.getOriginalFilename());
 			path.toFile().setExecutable(true, false);
 			
 			FileOutputStream out = new FileOutputStream(path.toFile());
@@ -107,7 +107,7 @@ public class CategoryService {
 		try {
 			Category category = find(Long.valueOf(image));
 			
-			Path path = Paths.get("imagens/" + category.getImage());
+			Path path = Paths.get("imagens/category" + category.getImage());
 			Files.delete(path);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

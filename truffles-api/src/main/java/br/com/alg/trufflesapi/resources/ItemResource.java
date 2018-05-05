@@ -21,10 +21,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.alg.trufflesapi.model.Item;
 import br.com.alg.trufflesapi.model.Price;
+import br.com.alg.trufflesapi.model.PriceType;
 import br.com.alg.trufflesapi.services.ItemService;
 
 @RestController
@@ -46,6 +48,11 @@ public class ItemResource {
 		return ResponseEntity.status(HttpStatus.OK).body(service.findPriceByItem(item));
 	}
 	
+	@GetMapping("/priceType")
+	public ResponseEntity<List<PriceType>> listPriceType() {
+		return ResponseEntity.status(HttpStatus.OK).body(service.listPriceType());
+	}
+	
 	@GetMapping("/{image}/image")
 	public ResponseEntity<Map<String, String>> getImageByItem(@PathVariable("image") String image) {
 		Map<String, String> jsonMap = this.service.getImage(image);
@@ -64,8 +71,23 @@ public class ItemResource {
 	public ResponseEntity<Void> save(@Valid @RequestBody Item item) {
 		
 		item = service.save(item);
+		final Long id = item.getId();
+		item.getPrices().forEach(price -> {			
+			service.saveItemPrice(price, id);
+		});
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(item.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
+	
+	@PostMapping(value="/image/{id}")
+	public ResponseEntity<Void> saveImage(@Valid @RequestParam(value="file", required=false) MultipartFile file,  @PathVariable(value="id", required= false) String id) {
+		
+		if(file == null) return null;
+		
+		service.saveImage(id, file);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}").buildAndExpand("Sucesso").toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	

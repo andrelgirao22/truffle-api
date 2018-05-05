@@ -1,7 +1,11 @@
 package br.com.alg.trufflesapi.services;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,12 +16,14 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.com.alg.trufflesapi.exceptions.ItemNotFoundException;
 import br.com.alg.trufflesapi.exceptions.PriceNotFoudException;
 import br.com.alg.trufflesapi.model.Category;
 import br.com.alg.trufflesapi.model.Item;
 import br.com.alg.trufflesapi.model.Price;
+import br.com.alg.trufflesapi.model.PriceType;
 import br.com.alg.trufflesapi.repositories.ItemRepository;
 import br.com.alg.trufflesapi.repositories.PriceRepository;
 
@@ -96,6 +102,44 @@ public class ItemService {
 			System.out.println(e.getMessage());
 			return null;
 		}
+	}
+	
+
+	public void saveImage(String id, @Valid MultipartFile file) {
+		
+		try {
+			
+			removeOldImage(id);
+			
+			Path path = Paths.get("imagens/item/" + file.getOriginalFilename());
+			path.toFile().setExecutable(true, false);
+			
+			FileOutputStream out = new FileOutputStream(path.toFile());
+			out.write(file.getBytes());
+			out.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void removeOldImage(String image) {
+		
+		if(image == null) return ;
+
+		try {
+			Item item = find(Long.valueOf(image));
+			
+			Path path = Paths.get("imagens/item" + item.getImage());
+			Files.delete(path);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+	}
+
+	public List<PriceType> listPriceType() {
+		return Arrays.asList(PriceType.values());
 	}
 	
 }
