@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,8 +36,9 @@ public class Order {
 	@NumberFormat(pattern="#,##0.00")
 	private Double orderValue;
 	
-	@Column(name="bl_status")
-	private boolean status;
+	@Enumerated(EnumType.STRING)
+	@Column(name="tx_status")
+	private OrderStatusType status;
 	
 	@OneToMany(mappedBy="order")
 	private List<OrderItem> orderItens;
@@ -84,11 +87,11 @@ public class Order {
 		this.orderValue = orderValue;
 	}
 
-	public boolean isStatus() {
+	public OrderStatusType getStatus() {
 		return status;
 	}
 
-	public void setStatus(boolean status) {
+	public void setStatus(OrderStatusType status) {
 		this.status = status;
 	}
 

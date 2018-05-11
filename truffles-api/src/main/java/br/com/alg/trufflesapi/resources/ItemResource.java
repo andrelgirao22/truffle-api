@@ -116,7 +116,7 @@ public class ItemResource {
 	
 	
 	@DeleteMapping(value= "/{id}")
-	public ResponseEntity<Void> deletar(@PathVariable("id") Long id, @RequestParam("token") String token) {
+	public ResponseEntity<Void> deletar(@PathVariable("id") Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}

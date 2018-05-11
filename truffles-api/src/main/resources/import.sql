@@ -9,3 +9,10 @@
 
 --insert into tb_category (dt_category, tx_name) values ('2018-03-31','Tradicionais');
 --insert into tb_category (dt_category, tx_name) values ('2018-03-31','Finos');
+
+
+--insert into tb_group (tx_name) value ('ADMIN');
+--insert into tb_group (tx_name) value ('USER');
+
+--INSERT INTO `truffleapp`.`tb_account` (`tx_city`, `tx_state`, `bl_status`, `tx_email`, `tx_password`, `tx_name`) 
+--VALUES ('Fortaleza', 'CE', true, 'admin@truffles.com.br', '{bcrypt}$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'admin');

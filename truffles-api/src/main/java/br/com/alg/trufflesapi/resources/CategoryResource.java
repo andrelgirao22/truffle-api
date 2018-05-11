@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,13 +36,14 @@ public class CategoryResource {
 	@Autowired
 	private CategoryService service;
 	
-	
 	@GetMapping
+	@PreAuthorize("hasAnyRole('ADMIN','USER')")
 	public ResponseEntity<List<Category>> listItem() {
 		return ResponseEntity.status(HttpStatus.OK).body(service.listAll());
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Void> save(@Valid @RequestBody Category category) {
 		
 		category = service.save(category);
@@ -51,6 +53,7 @@ public class CategoryResource {
 	}
 	
 	@PostMapping(value="/image/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Void> saveImage(@Valid @RequestParam(value="file", required=false) MultipartFile file,  @PathVariable(value="id", required= false) String id) {
 		
 		if(file == null) return null;
@@ -62,6 +65,7 @@ public class CategoryResource {
 	}
 	
 	@PutMapping(value="/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Void> update(@RequestBody Category category, @PathVariable("id") Long id) {
 		category.setId(id);
 		service.update(category);
@@ -69,12 +73,14 @@ public class CategoryResource {
 	}
 	
 	@GetMapping("/{image}/image")
+	@PreAuthorize("hasAnyRole('ADMIN','USER')")
 	public ResponseEntity<Map<String, String>> getImageByItem(@PathVariable("image") String image) {
 		Map<String, String> jsonMap = this.service.getImage(image);
 		return ResponseEntity.status(HttpStatus.OK).body(jsonMap);
 	}
 	
 	@GetMapping(value= "/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN','USER')")
 	public ResponseEntity<?> busca(@PathVariable("id") Long id) {
 		
 		Category category = service.find(id);
@@ -84,6 +90,7 @@ public class CategoryResource {
 	
 	
 	@DeleteMapping(value= "/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Void> deletar(@PathVariable("id") Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();

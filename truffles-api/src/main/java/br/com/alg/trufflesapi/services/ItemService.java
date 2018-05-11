@@ -24,6 +24,7 @@ import br.com.alg.trufflesapi.model.Category;
 import br.com.alg.trufflesapi.model.Item;
 import br.com.alg.trufflesapi.model.Price;
 import br.com.alg.trufflesapi.model.PriceType;
+import br.com.alg.trufflesapi.model.StatusItem;
 import br.com.alg.trufflesapi.repositories.ItemRepository;
 import br.com.alg.trufflesapi.repositories.PriceRepository;
 
@@ -45,11 +46,16 @@ public class ItemService {
 
 	public Item save(Item item) {
 		item.setDate(new Date());
+		item.setStatus(StatusItem.PENDENTE);
 		return repository.save(item);
 	}
 
 	public void update(Item item) {
 		find(item.getId());
+		item.getPrices().forEach(price -> {
+			price.setItem(item);
+			saveItemPrice(price, item.getId());
+		});
 		repository.save(item);
 	}
 
@@ -70,7 +76,9 @@ public class ItemService {
 	public Price saveItemPrice(Price price, Long id) {
 		Item item = find(id);
 		price.setItem(item);
-		price.setDtStart(new Date());
+		if(price.getId() == null) {
+			price.setDtStart(new Date());
+		}
 		return priceRepository.save(price);
 	}
 	
@@ -88,8 +96,9 @@ public class ItemService {
 		
 		try {
 			
-			ClassLoader classLoader = getClass().getClassLoader();
-			File file = new File(classLoader.getResource("img/" + image).getFile());
+			Path path = Paths.get("imagens/item/" + image);
+			
+			File file = path.toFile();
 			
 			String encodeImage = Base64.getEncoder().withoutPadding().encodeToString(Files.readAllBytes(file.toPath()));
 			

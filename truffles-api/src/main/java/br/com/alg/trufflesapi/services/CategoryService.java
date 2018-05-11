@@ -88,7 +88,7 @@ public class CategoryService {
 			
 			removeOldImage(id);
 			
-			Path path = Paths.get("imagens/category" + file.getOriginalFilename());
+			Path path = Paths.get("imagens/category/" + file.getOriginalFilename());
 			path.toFile().setExecutable(true, false);
 			
 			FileOutputStream out = new FileOutputStream(path.toFile());

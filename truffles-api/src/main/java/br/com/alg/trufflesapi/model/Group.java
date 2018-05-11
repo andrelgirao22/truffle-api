@@ -14,12 +14,19 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="tb_group")
-public class Group {
+public class Group implements GrantedAuthority {
 
+	private static final long serialVersionUID = 1L;
+
+	public static final String ADMIN = "ROLE_ADMIN";
+	public static final String USER = "ROLE_USER";
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id_group")
@@ -31,7 +38,7 @@ public class Group {
 
 	@ManyToMany(mappedBy="groups")
 	@JsonIgnore
-	private List<User> users;
+	private List<Account> accounts;
 	
 	@ManyToMany
 	@JoinTable(name="tb_groups_permissions",
@@ -59,17 +66,17 @@ public class Group {
 		return this.name;
 	}
 
-	public List<User> getUsers() {
-		return users;
+	public List<Account> getAccounts() {
+		return accounts;
 	}
 
-	public void setUsers(List<User> users) {
-		this.users = users;
+	public void setAccounts(List<Account> accounts) {
+		this.accounts = accounts;
 	}
-	
-	public void addUsers(User user) {
-		if(users == null) users = new ArrayList<>();
-		this.users.add(user);
+
+	public void addAccounts(Account account) {
+		if(accounts == null) accounts = new ArrayList<>();
+		this.accounts.add(account);
 	}
 
 	public List<Permission> getPermissions() {
@@ -85,9 +92,8 @@ public class Group {
 		permissions.add(permission);
 	}
 
-
-	/*@Override
+	@Override
 	public String getAuthority() {
 		return this.name;
-	}*/
+	}
 }

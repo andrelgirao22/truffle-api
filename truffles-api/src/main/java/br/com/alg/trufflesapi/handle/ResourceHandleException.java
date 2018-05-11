@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -22,6 +23,15 @@ import br.com.alg.trufflesapi.exceptions.UserException;
 @ControllerAdvice
 public class ResourceHandleException {
 
+	
+	@ExceptionHandler(BadCredentialsException.class)
+	public ResponseEntity<Erro> handleInvalidLoginException(BadCredentialsException e,
+			HttpServletRequest request) {
+		Erro erro = new Erro();
+		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());
+		return ResponseEntity.badRequest().body(erro);
+	}
+	
 	@ExceptionHandler(CredentiaisInvalidException.class)
 	public ResponseEntity<Erro> handleInvalidLoginException(CredentiaisInvalidException e,
 			HttpServletRequest request) {

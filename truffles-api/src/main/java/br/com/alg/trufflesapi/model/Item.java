@@ -3,6 +3,7 @@ package br.com.alg.trufflesapi.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -46,7 +47,7 @@ public class Item {
 	@DateTimeFormat(pattern	="dd/MM/yyyy") 
 	private Date date;
 	
-	@OneToMany(mappedBy="item", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="item", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Price> prices;
 	
 	@OneToMany(mappedBy="item")
