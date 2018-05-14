@@ -1,4 +1,4 @@
-                        package br.com.alg.trufflesapi;
+package br.com.alg.trufflesapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

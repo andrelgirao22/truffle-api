@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,22 +39,26 @@ public class ItemResource {
 	private ItemService service;
 	
 	@GetMapping
+	@PreAuthorize("hasAnyRole('DEV','USER')")
 	public ResponseEntity<List<Item>> listItem() {
 		return ResponseEntity.status(HttpStatus.OK).body(service.listAll());
 	}
 	
 	@GetMapping("/{id}/price")
+	@PreAuthorize("hasAnyRole('DEV','USER')")
 	public ResponseEntity<List<Price>> listPricesByItem(@Valid @PathVariable("id") Long id) {
 		Item item = this.service.find(id);
 		return ResponseEntity.status(HttpStatus.OK).body(service.findPriceByItem(item));
 	}
 	
 	@GetMapping("/priceType")
+	@PreAuthorize("hasAnyRole('DEV','USER')")
 	public ResponseEntity<List<PriceType>> listPriceType() {
 		return ResponseEntity.status(HttpStatus.OK).body(service.listPriceType());
 	}
 	
 	@GetMapping("/{image}/image")
+	@PreAuthorize("hasAnyRole('DEV','USER')")
 	public ResponseEntity<Map<String, String>> getImageByItem(@PathVariable("image") String image) {
 		Map<String, String> jsonMap = this.service.getImage(image);
 		
@@ -63,11 +68,13 @@ public class ItemResource {
 	}
 	
 	@GetMapping("/category/{id}")
+	@PreAuthorize("hasAnyRole('DEV','USER')")
 	public ResponseEntity<List<Item>> listByCategory(@Valid @PathVariable("id") Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(service.findByCategory(id));
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasAnyRole('DEV')")
 	public ResponseEntity<Void> save(@Valid @RequestBody Item item) {
 		
 		item = service.save(item);
@@ -81,6 +88,7 @@ public class ItemResource {
 	}
 	
 	@PostMapping(value="/image/{id}")
+	@PreAuthorize("hasAnyRole('DEV')")
 	public ResponseEntity<Void> saveImage(@Valid @RequestParam(value="file", required=false) MultipartFile file,  @PathVariable(value="id", required= false) String id) {
 		
 		if(file == null) return null;
@@ -92,6 +100,7 @@ public class ItemResource {
 	}
 	
 	@PostMapping(value="/{id}/price")
+	@PreAuthorize("hasAnyRole('DEV')")
 	public ResponseEntity<Void> saveItemPrice(@Valid @RequestBody Price price, @PathVariable("id") Long id) {
 		price = service.saveItemPrice(price, id);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -100,6 +109,7 @@ public class ItemResource {
 	}
 	
 	@PutMapping(value="/{id}")
+	@PreAuthorize("hasAnyRole('DEV')")
 	public ResponseEntity<Void> update(@RequestBody Item item, @PathVariable("id") Long id) {
 		item.setId(id);
 		service.update(item);
@@ -107,6 +117,7 @@ public class ItemResource {
 	}
 	
 	@GetMapping(value= "/{id}")
+	@PreAuthorize("hasAnyRole('DEV','USER')")
 	public ResponseEntity<?> busca(@PathVariable("id") Long id) {
 		
 		Item item = service.find(id);
@@ -116,6 +127,7 @@ public class ItemResource {
 	
 	
 	@DeleteMapping(value= "/{id}")
+	@PreAuthorize("hasAnyRole('DEV')")
 	public ResponseEntity<Void> deletar(@PathVariable("id") Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();

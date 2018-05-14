@@ -37,13 +37,13 @@ public class CategoryResource {
 	private CategoryService service;
 	
 	@GetMapping
-	@PreAuthorize("hasAnyRole('ADMIN','USER')")
+	@PreAuthorize("hasAnyRole('ADMIN','USER','DEV')")
 	public ResponseEntity<List<Category>> listItem() {
 		return ResponseEntity.status(HttpStatus.OK).body(service.listAll());
 	}
-	
+		
 	@PostMapping
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('DEV')")
 	public ResponseEntity<Void> save(@Valid @RequestBody Category category) {
 		
 		category = service.save(category);
@@ -53,7 +53,7 @@ public class CategoryResource {
 	}
 	
 	@PostMapping(value="/image/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('DEV')")
 	public ResponseEntity<Void> saveImage(@Valid @RequestParam(value="file", required=false) MultipartFile file,  @PathVariable(value="id", required= false) String id) {
 		
 		if(file == null) return null;
@@ -65,7 +65,7 @@ public class CategoryResource {
 	}
 	
 	@PutMapping(value="/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('DEV')")
 	public ResponseEntity<Void> update(@RequestBody Category category, @PathVariable("id") Long id) {
 		category.setId(id);
 		service.update(category);
@@ -73,14 +73,14 @@ public class CategoryResource {
 	}
 	
 	@GetMapping("/{image}/image")
-	@PreAuthorize("hasAnyRole('ADMIN','USER')")
+	@PreAuthorize("hasAnyRole('DEV','USER')")
 	public ResponseEntity<Map<String, String>> getImageByItem(@PathVariable("image") String image) {
 		Map<String, String> jsonMap = this.service.getImage(image);
 		return ResponseEntity.status(HttpStatus.OK).body(jsonMap);
 	}
 	
 	@GetMapping(value= "/{id}")
-	@PreAuthorize("hasAnyRole('ADMIN','USER')")
+	@PreAuthorize("hasAnyRole('DEV','USER')")
 	public ResponseEntity<?> busca(@PathVariable("id") Long id) {
 		
 		Category category = service.find(id);
@@ -90,7 +90,7 @@ public class CategoryResource {
 	
 	
 	@DeleteMapping(value= "/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('DEV')")
 	public ResponseEntity<Void> deletar(@PathVariable("id") Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
