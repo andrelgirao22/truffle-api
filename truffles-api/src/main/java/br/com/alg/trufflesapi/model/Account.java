@@ -1,5 +1,6 @@
 package br.com.alg.trufflesapi.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
@@ -28,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table(name="tb_account")
-public class Account implements UserDetails {
+public class Account implements Serializable, UserDetails {
 
 	private static final long serialVersionUID = 1L;
 
@@ -55,6 +56,9 @@ public class Account implements UserDetails {
 			joinColumns= @JoinColumn(name= "id_account", referencedColumnName = "id_account"),
 			inverseJoinColumns= @JoinColumn(name="id_group", referencedColumnName="id_group"))
 	private List<Group> groups;
+	
+	public Account() {
+	}
 	
 	@Column(name="tx_image_user")
 	private String userImage;
@@ -248,4 +252,31 @@ public class Account implements UserDetails {
 	public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
 		this.lastPasswordResetDate = lastPasswordResetDate;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Account other = (Account) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+	
+	
 }

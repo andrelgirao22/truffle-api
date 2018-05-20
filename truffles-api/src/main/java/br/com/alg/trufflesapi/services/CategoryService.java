@@ -1,12 +1,7 @@
 package br.com.alg.trufflesapi.services;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,6 +14,9 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,6 +32,11 @@ public class CategoryService {
 
 	public List<Category> listAll() {
 		return repository.findAll();
+	}
+	
+	public Page<Category> findPage(Integer page, Integer linesPerPage, String orderby, String direction) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderby);
+		return this.repository.findAll(pageRequest);
 	}
 
 	public Category save(Category category) {
