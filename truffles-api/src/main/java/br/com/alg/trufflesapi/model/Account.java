@@ -45,10 +45,11 @@ public class Account implements Serializable, UserDetails {
 	@Column(name="tx_email", unique=true)
 	private String email;
 	
+	
 	@NotEmpty
 	@Column(name="tx_password")
 	@JsonIgnore
-	@JsonProperty(access = Access.WRITE_ONLY)
+	//@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	
 	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
