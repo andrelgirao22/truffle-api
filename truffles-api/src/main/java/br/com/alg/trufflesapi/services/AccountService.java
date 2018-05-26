@@ -2,6 +2,7 @@ package br.com.alg.trufflesapi.services;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.alg.trufflesapi.exceptions.AccountNotFoundException;
 import br.com.alg.trufflesapi.model.Account;
+import br.com.alg.trufflesapi.model.dto.AccountDTO;
 import br.com.alg.trufflesapi.repositories.AccountRepository;
 
 @Service
@@ -17,8 +19,8 @@ public class AccountService {
 	@Autowired
 	private AccountRepository repository;
 
-	public List<Account> listAll() {
-		return repository.findAll();
+	public List<AccountDTO> listAll() {
+		return repository.findAll().stream().map(account -> new AccountDTO(account)).collect(Collectors.toList());
 	}
 
 	public Account save(Account account) {
@@ -53,5 +55,10 @@ public class AccountService {
 
 	public Account findByEmail(String email) {
 		return repository.findByEmail(email);
+	}
+
+	public void saveAll(List<Account> accounts) {
+		this.repository.saveAll(accounts);
+		
 	}
 }

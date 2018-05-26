@@ -41,10 +41,10 @@ public class Order {
 	private OrderStatusType status;
 	
 	@OneToMany(mappedBy="order")
-	private List<OrderItem> orderItens;
+	private List<OrderItem> orderItens = new ArrayList<>();
 	
 	@OneToMany(mappedBy="order")
-	private List<Payment> payments;
+	private List<Payment> payments = new ArrayList<>();
 
 	@OneToOne
 	@JoinColumn(name="id_account")

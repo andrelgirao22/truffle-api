@@ -2,6 +2,7 @@ package br.com.alg.trufflesapi.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
@@ -24,8 +26,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table(name="tb_account")
@@ -45,18 +45,17 @@ public class Account implements Serializable, UserDetails {
 	@Column(name="tx_email", unique=true)
 	private String email;
 	
-	
 	@NotEmpty
-	@Column(name="tx_password")
 	@JsonIgnore
-	//@JsonProperty(access = Access.WRITE_ONLY)
+	@Column(name="tx_password")
 	private String password;
 	
 	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@JsonIgnore
 	@JoinTable(name="tb_account_groups",
-			joinColumns= @JoinColumn(name= "id_account", referencedColumnName = "id_account"),
+			joinColumns= @JoinColumn(name="id_account", referencedColumnName = "id_account"),
 			inverseJoinColumns= @JoinColumn(name="id_group", referencedColumnName="id_group"))
-	private List<Group> groups;
+	private List<Group> groups = new ArrayList<>();
 	
 	public Account() {
 	}
@@ -64,23 +63,8 @@ public class Account implements Serializable, UserDetails {
 	@Column(name="tx_image_user")
 	private String userImage;
 	
-	@Column(name="tx_address_name")
-	private String addressName;
-	
-	@Column(name="tx_address_number")
-	private String addressNumber;
-	
-	@Column(name="tx_neighborhood")
-	private String neighborhood;
-	
-	@Column(name="tx_city")
-	private String city;
-	
-	@Column(name="tx_state")
-	private String state;
-	
-	@Column(name="tx_compl")
-	private String complement;
+	@OneToMany(mappedBy="account")
+	private List<Address> addresses = new ArrayList<>();
 
 	@Column(name="dt_start")
 	@DateTimeFormat(pattern	="dd/MM/yyyy") 
@@ -96,6 +80,19 @@ public class Account implements Serializable, UserDetails {
 	@Column(name = "dt_last_password_reset")
 	private Timestamp lastPasswordResetDate;
 	
+	public Account(Long id, String name, String email, String password, String userImage,
+			Date dtStart, Date dtEnd, boolean status) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.userImage = userImage;
+		this.dtStart = dtStart;
+		this.dtEnd = dtEnd;
+		this.status = status;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -118,10 +115,6 @@ public class Account implements Serializable, UserDetails {
 
 	public List<Group> getGroups() {
 		return groups;
-	}
-
-	public void setGroups(List<Group> groups) {
-		this.groups = groups;
 	}
 
 	public String getUserImage() {
@@ -168,54 +161,6 @@ public class Account implements Serializable, UserDetails {
 		this.id = id;
 	}
 
-	public String getAddressName() {
-		return addressName;
-	}
-
-	public void setAddressName(String addressName) {
-		this.addressName = addressName;
-	}
-
-	public String getAddressNumber() {
-		return addressNumber;
-	}
-
-	public void setAddressNumber(String addressNumber) {
-		this.addressNumber = addressNumber;
-	}
-
-	public String getNeighborhood() {
-		return neighborhood;
-	}
-
-	public void setNeighborhood(String neighborhood) {
-		this.neighborhood = neighborhood;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public String getComplement() {
-		return complement;
-	}
-
-	public void setComplement(String complement) {
-		this.complement = complement;
-	}
-
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.groups;
@@ -252,6 +197,14 @@ public class Account implements Serializable, UserDetails {
 
 	public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
 		this.lastPasswordResetDate = lastPasswordResetDate;
+	}
+
+	public List<Address> getAddresses() {
+		return addresses;
+	}
+
+	public void addAddresses(Address address) {
+		this.addresses.add(address);
 	}
 
 	@Override

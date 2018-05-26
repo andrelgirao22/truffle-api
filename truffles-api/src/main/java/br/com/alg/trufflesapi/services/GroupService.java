@@ -43,5 +43,14 @@ public class GroupService {
 
 	public Group findById(Long id) {
 		return this.find(id);
+	}
+
+	public Group findByName(String string) {
+		return this.repository.findByName(string)
+				.orElseThrow(new GroupNotFoundException("Grupo não encontrado"));
+	}
+
+	public void saveAll(List<Group> groups) {
+		this.repository.saveAll(groups);
 	}	
 }

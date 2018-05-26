@@ -1,5 +1,6 @@
 package br.com.alg.trufflesapi.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -20,7 +21,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="tb_payment")
-public class Payment {
+public class Payment implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -49,9 +52,16 @@ public class Payment {
 	@Column(name="dt_payment")
 	@DateTimeFormat(pattern	="dd/MM/yyyy") 
 	private Date dataPayment;
+	
+	@Column(name="dt_expires")
+	@DateTimeFormat(pattern="dd/MM/yyyy")
+	private Date dataExpires;
 
 	@Column(name="tx_status")
 	private String status;
+
+	public Payment() {
+	}
 	
 	public Long getId() {
 		return id;
@@ -115,5 +125,38 @@ public class Payment {
 
 	public void setOrder(Order order) {
 		this.order = order;
+	}
+
+	public Date getDataExpires() {
+		return dataExpires;
+	}
+
+	public void setDataExpires(Date dataExpires) {
+		this.dataExpires = dataExpires;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Payment other = (Payment) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 }

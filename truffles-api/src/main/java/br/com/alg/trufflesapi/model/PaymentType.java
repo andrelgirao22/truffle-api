@@ -2,8 +2,8 @@ package br.com.alg.trufflesapi.model;
 
 public enum PaymentType {
 
-	CREDIT_CARD("CRE"),
-	MONEY("MON");
+	CARTAO_CREDITO("Cartao"),
+	DINHEIRO("Dinheiro");
 	
 	private String description;
 	

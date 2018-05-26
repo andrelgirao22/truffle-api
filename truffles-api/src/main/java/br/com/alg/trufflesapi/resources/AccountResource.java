@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.alg.trufflesapi.model.Account;
+import br.com.alg.trufflesapi.model.dto.AccountDTO;
 import br.com.alg.trufflesapi.services.AccountService;
 
 @RestController
@@ -29,7 +30,7 @@ public class AccountResource {
 	
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<List<Account>> list() {
+	public ResponseEntity<List<AccountDTO>> list() {
 		return ResponseEntity.ok(this.service.listAll());
 	}
 	
