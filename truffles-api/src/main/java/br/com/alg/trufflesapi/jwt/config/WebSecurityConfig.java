@@ -101,7 +101,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/info",
                 "/trace",
                 "/health",
-                "/health/"
+                "/health/",
+                "/h2-console/**"
             );
 
     }
