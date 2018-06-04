@@ -11,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,9 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import br.com.alg.trufflesapi.jwt.security.TokenHelper;
 import br.com.alg.trufflesapi.jwt.security.auth.RestAuthenticationEntryPoint;
@@ -38,6 +34,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+	
+	private final String POST_MATCHERS [] = {
+			"/auth/**",
+			"/forgot_password/**"
+	};
+	
+	private final String GET_MATCHERS [] = {
+			"/category/**",
+			"/webjars/**",
+            "/*.html",
+            "/favicon.ico",
+            "/**/*.html",
+            "/**/*.css",
+            "/**/*.js",
+            "/info",
+            "/trace",
+            "/health",
+            "/health/",
+            "/h2-console/**"
+	};
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -52,8 +68,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return passwordEncoder;
 	}
 	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 
     @Bean
     @Override
@@ -64,7 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(jwtUserDetailsService)
-            .passwordEncoder(passwordEncoder);
+            .passwordEncoder(passwordEncoder());
     }
 
     @Autowired
@@ -78,42 +92,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS ).and()
             .exceptionHandling().authenticationEntryPoint( restAuthenticationEntryPoint ).and()
             .authorizeRequests()
-            .antMatchers("/auth/**").permitAll()
+            .antMatchers(HttpMethod.POST, POST_MATCHERS).permitAll()
+            .antMatchers(HttpMethod.GET, GET_MATCHERS).permitAll()
             .anyRequest().authenticated().and()
             .addFilterBefore(new TokenAuthenticationFilter(tokenHelper, jwtUserDetailsService), BasicAuthenticationFilter.class);
-    }
-    
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(
-                HttpMethod.POST,
-                "/auth/login"
-        );
-        web.ignoring().antMatchers(
-                HttpMethod.GET,
-                "/",
-                "/webjars/**",
-                "/*.html",
-                "/favicon.ico",
-                "/**/*.html",
-                "/**/*.css",
-                "/**/*.js",
-                "/info",
-                "/trace",
-                "/health",
-                "/health/",
-                "/h2-console/**"
-            );
-
-    }
-    
-    @Bean
-    public WebMvcConfigurer corsConfigure() {
-    	return new WebMvcConfigurerAdapter() {
-    		@Override
-    		public void addCorsMappings(CorsRegistry registry) {
-    			registry.addMapping("/**");
-    		}
-		};
     }
 }

@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ import br.com.alg.trufflesapi.jwt.service.impl.CustomUserDetailsService;
 import br.com.alg.trufflesapi.model.Account;
 import br.com.alg.trufflesapi.model.JwtAuthenticationRequest;
 import br.com.alg.trufflesapi.model.UserTokenState;
+import br.com.alg.trufflesapi.model.dto.AccountDTO;
 
 @RestController
 @CrossOrigin("${origin-permited}")
@@ -85,10 +87,17 @@ public class AuthenticationResource {
         }
     }
 
-	    @RequestMapping(value = "/change-password", method = RequestMethod.POST)
-	    @PreAuthorize("hasRole('USER')")
+	    @PostMapping(value = "/change_password")
 	    public ResponseEntity<?> changePassword(@RequestBody PasswordChanger passwordChanger) {
 	        userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
+	        Map<String, String> result = new HashMap<>();
+	        result.put( "result", "success" );
+	        return ResponseEntity.accepted().body(result);
+	    }
+	    
+	    @PostMapping(value = "/forgot_password")
+	    public ResponseEntity<?> forgotPassword(@Valid @RequestBody AccountDTO accountDTO) {
+	        userDetailsService.forgotPassword(accountDTO);
 	        Map<String, String> result = new HashMap<>();
 	        result.put( "result", "success" );
 	        return ResponseEntity.accepted().body(result);

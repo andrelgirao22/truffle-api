@@ -2,11 +2,13 @@ package br.com.alg.trufflesapi.services;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.alg.trufflesapi.exceptions.AccountNotFoundException;
 import br.com.alg.trufflesapi.model.Account;
@@ -34,6 +36,7 @@ public class AccountService {
 		return repository.save(account);
 	}
 
+	@Transactional
 	public void update(Account account) {
 		checkExist(account.getId());
 		repository.save(account);
@@ -60,5 +63,29 @@ public class AccountService {
 	public void saveAll(List<Account> accounts) {
 		this.repository.saveAll(accounts);
 		
+	}
+
+	public String generateNewPassword() {
+		
+		char passwd [] = new char[10];
+		for(int i=0; i< 10; i++) {
+			passwd[i] = random();
+		}
+		
+		return new String (passwd);
+	}
+
+	private char random() {
+		
+		Random random = new Random();
+		
+		int opt = random.nextInt(3);
+		if(opt == 0) { //gerar um digito
+			return (char) (random.nextInt(10) + 48);
+		} else if(opt == 1){ //gera letra maiuscula 
+			return (char) (random.nextInt(26) + 65);
+		} else { //gera letra minuscula
+			return (char) (random.nextInt(26) + 97);
+		}
 	}
 }
