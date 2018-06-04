@@ -68,7 +68,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     }
 
-	public void forgotPassword(@Valid AccountDTO accountDto) {
+	public String forgotPassword(@Valid AccountDTO accountDto) {
 		
 		Account account = this.accountService.findByEmail(accountDto.getEmail());
 		
@@ -80,7 +80,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		
 		account.setPassword(this.passwordEncoder.encode(newPassword));
 		this.accountService.update(account);
-		
+		return account.getPassword();
 	}
 
 

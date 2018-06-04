@@ -12,7 +12,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.alg.trufflesapi.jwt.security.TokenHelper;
@@ -97,9 +95,9 @@ public class AuthenticationResource {
 	    
 	    @PostMapping(value = "/forgot_password")
 	    public ResponseEntity<?> forgotPassword(@Valid @RequestBody AccountDTO accountDTO) {
-	        userDetailsService.forgotPassword(accountDTO);
+	        String passwd = userDetailsService.forgotPassword(accountDTO);
 	        Map<String, String> result = new HashMap<>();
-	        result.put( "result", "success" );
+	        result.put( "new password", passwd );
 	        return ResponseEntity.accepted().body(result);
 	    }
 
