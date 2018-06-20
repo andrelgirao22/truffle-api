@@ -37,13 +37,11 @@ public class CategoryResource {
 	private CategoryService service;
 	
 	@GetMapping
-	@PreAuthorize("hasAnyRole('ADMIN','USER','DEV')")
 	public ResponseEntity<List<Category>> findAll() {
 		return ResponseEntity.status(HttpStatus.OK).body(service.listAll());
 	}
 	
 	@GetMapping(value="/page")
-	@PreAuthorize("hasAnyRole('ADMIN','USER','DEV')")
 	public ResponseEntity<Page<Category>> findPage(
 			@RequestParam(value="page", defaultValue="0") Integer page, 
 			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 

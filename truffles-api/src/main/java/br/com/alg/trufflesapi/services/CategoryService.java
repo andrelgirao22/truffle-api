@@ -30,7 +30,7 @@ public class CategoryService {
 	@Value("${img.prefix.category}")
 	private String prefix;
 	
-	@Value("${img.category.size}")
+	@Value("${img.picture.size}")
 	private Integer size;
 	
 	@Autowired

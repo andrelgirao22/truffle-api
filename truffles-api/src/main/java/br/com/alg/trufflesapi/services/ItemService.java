@@ -1,20 +1,19 @@
 package br.com.alg.trufflesapi.services;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
+import java.net.URI;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,6 +38,18 @@ public class ItemService {
 	
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private ImageService imageService;
+	
+	@Autowired
+	private AmazonS3Service s3Service;
+	
+	@Value("${img.prefix.item}")
+	private String prefix;
+	
+	@Value("${img.picture.size}")
+	private Integer size;
 
 	public List<Item> listAll() {
 		return repository.findAll();
@@ -92,7 +103,29 @@ public class ItemService {
 		return this.repository.findByCategory(category);
 	}
 	
-	public Map<String, String> getImage(String image) {
+	public URI uploadPicture(MultipartFile file, Long id) {
+		
+		Item item = this.find(id);
+		if(item == null) {
+			throw new ItemNotFoundException("objeto não encontrado " + id);
+		}
+		
+		BufferedImage jpgImage = imageService.getJpgImageFromFile(file);
+		jpgImage = imageService.cropSquare(jpgImage);
+		jpgImage = imageService.resize(jpgImage, size);
+		String filename = prefix + item.getId() + ".jpg";
+		
+		InputStream is = this.imageService.getInputStream(jpgImage, "jpg");
+		
+		URI uri = this.s3Service.uploadFile(is, filename, "image");
+		
+		item.setImageUrl(uri.toString());
+		this.repository.save(item);
+		
+		return uri;
+	}
+	
+	/*public Map<String, String> getImage(String image) {
 		
 		try {
 			
@@ -146,9 +179,14 @@ public class ItemService {
 		}
 		
 	}
-
+*/
 	public List<PriceType> listPriceType() {
 		return Arrays.asList(PriceType.values());
+	}
+
+	public Page<Item> findPage(Integer page, Integer linesPerPage, String orderby, String direction) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderby);
+		return this.repository.findAll(pageRequest);
 	}
 	
 }

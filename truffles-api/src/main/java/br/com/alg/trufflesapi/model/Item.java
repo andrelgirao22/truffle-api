@@ -38,8 +38,8 @@ public class Item implements Serializable {
 	@Column(name="tx_description")
 	private String description;
 	
-	@Column(name="tx_image")
-	private String image;
+	@Column(name="tx_image_url")
+	private String imageUrl;
 	
 	@Column(name="tx_status")
 	@Enumerated(EnumType.STRING)
@@ -68,7 +68,7 @@ public class Item implements Serializable {
 		this.id = id;
 		this.name = name;
 		this.description = description;
-		this.image = image;
+		this.imageUrl = image;
 		this.status = status;
 		this.date = date;
 		this.category = category;
@@ -97,13 +97,13 @@ public class Item implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public String getImage() {
-		return image;
+
+	public String getImageUrl() {
+		return imageUrl;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	public String getDescription() {

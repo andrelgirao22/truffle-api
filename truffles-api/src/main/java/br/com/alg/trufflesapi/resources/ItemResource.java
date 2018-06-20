@@ -2,12 +2,12 @@ package br.com.alg.trufflesapi.resources;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.alg.trufflesapi.exceptions.FileException;
 import br.com.alg.trufflesapi.model.Item;
 import br.com.alg.trufflesapi.model.Price;
 import br.com.alg.trufflesapi.model.PriceType;
@@ -39,25 +40,33 @@ public class ItemResource {
 	private ItemService service;
 	
 	@GetMapping
-	@PreAuthorize("hasAnyRole('DEV','USER')")
 	public ResponseEntity<List<Item>> listItem() {
 		return ResponseEntity.status(HttpStatus.OK).body(service.listAll());
 	}
 	
-	@GetMapping("/{id}/price")
-	@PreAuthorize("hasAnyRole('DEV','USER')")
+	@GetMapping(value="/page")
+	public ResponseEntity<Page<Item>> findPage(
+			@RequestParam(value="page", defaultValue="0") Integer page, 
+			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 
+			@RequestParam(value="orderby", defaultValue="name") String orderby, 
+			@RequestParam(value="direction", defaultValue="ASC") String direction) {
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(service.findPage(page, linesPerPage, orderby, direction));
+	}
+	
+	@GetMapping("/price/{id}")
 	public ResponseEntity<List<Price>> listPricesByItem(@Valid @PathVariable("id") Long id) {
 		Item item = this.service.find(id);
 		return ResponseEntity.status(HttpStatus.OK).body(service.findPriceByItem(item));
 	}
 	
 	@GetMapping("/priceType")
-	@PreAuthorize("hasAnyRole('DEV','USER')")
 	public ResponseEntity<List<PriceType>> listPriceType() {
 		return ResponseEntity.status(HttpStatus.OK).body(service.listPriceType());
 	}
 	
-	@GetMapping("/{image}/image")
+	/*@GetMapping("/{image}/image")
 	@PreAuthorize("hasAnyRole('DEV','USER')")
 	public ResponseEntity<Map<String, String>> getImageByItem(@PathVariable("image") String image) {
 		Map<String, String> jsonMap = this.service.getImage(image);
@@ -65,10 +74,9 @@ public class ItemResource {
 		CacheControl cacheControl = CacheControl.maxAge(60, TimeUnit.SECONDS);
 		return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(jsonMap);
 		
-	}
+	}*/
 	
 	@GetMapping("/category/{id}")
-	@PreAuthorize("hasAnyRole('DEV','USER')")
 	public ResponseEntity<List<Item>> listByCategory(@Valid @PathVariable("id") Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(service.findByCategory(id));
 	}
@@ -87,20 +95,18 @@ public class ItemResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@PostMapping(value="/image/{id}")
-	@PreAuthorize("hasAnyRole('DEV')")
-	public ResponseEntity<Void> saveImage(@Valid @RequestParam(value="file", required=false) MultipartFile file,  @PathVariable(value="id", required= false) String id) {
+	@PostMapping(value="/picture/{id}")
+	@PreAuthorize("hasAnyRole('DEV', 'ADMIN')")
+	public ResponseEntity<Void> saveImage(@Valid @RequestParam(name="file", required=true) MultipartFile file,  @PathVariable(name="id", required= true) Long id) {
 		
-		if(file == null) return null;
+		if(file == null) throw new FileException("Imagem não enviada.");
 		
-		service.saveImage(id, file);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand("Sucesso").toUri();
+		URI uri = this.service.uploadPicture(file, id);
 		return ResponseEntity.created(uri).build();
 	}
 	
 	@PostMapping(value="/{id}/price")
-	@PreAuthorize("hasAnyRole('DEV')")
+	@PreAuthorize("hasAnyRole('DEV', 'ADMIN')")
 	public ResponseEntity<Void> saveItemPrice(@Valid @RequestBody Price price, @PathVariable("id") Long id) {
 		price = service.saveItemPrice(price, id);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -109,7 +115,7 @@ public class ItemResource {
 	}
 	
 	@PutMapping(value="/{id}")
-	@PreAuthorize("hasAnyRole('DEV')")
+	@PreAuthorize("hasAnyRole('DEV','ADMIN')")
 	public ResponseEntity<Void> update(@RequestBody Item item, @PathVariable("id") Long id) {
 		item.setId(id);
 		service.update(item);
@@ -117,7 +123,6 @@ public class ItemResource {
 	}
 	
 	@GetMapping(value= "/{id}")
-	@PreAuthorize("hasAnyRole('DEV','USER')")
 	public ResponseEntity<?> busca(@PathVariable("id") Long id) {
 		
 		Item item = service.find(id);
