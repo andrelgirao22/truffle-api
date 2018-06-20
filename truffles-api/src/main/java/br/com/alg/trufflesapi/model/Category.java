@@ -23,8 +23,8 @@ public class Category {
 	@Column(name="tx_name")
 	private String name;
 	
-	@Column(name="tx_image")
-	private String image;
+	@Column(name="tx_image_url")
+	private String imageUrl;
 	
 	@Column(name="dt_category")
 	@DateTimeFormat(pattern	="dd/MM/yyyy") 
@@ -54,12 +54,11 @@ public class Category {
 		this.date = date;
 	}
 
-	public String getImage() {
-		return image;
+	public String getImageUrl() {
+		return imageUrl;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
-
 }

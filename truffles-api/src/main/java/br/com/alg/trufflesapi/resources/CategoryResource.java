@@ -2,7 +2,6 @@ package br.com.alg.trufflesapi.resources;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
@@ -65,15 +64,13 @@ public class CategoryResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@PostMapping(value="/image/{id}")
+	@PostMapping(value="/picture/{id}")
 	@PreAuthorize("hasAnyRole('DEV')")
-	public ResponseEntity<Void> saveImage(@Valid @RequestParam(value="file", required=false) MultipartFile file,  @PathVariable(value="id", required= false) String id) {
+	public ResponseEntity<Void> saveImage(@Valid @RequestParam(name="file", required=true) MultipartFile file,  @PathVariable(name="id", required= true) Long id) {
 		
 		if(file == null) return null;
 		
-		service.saveImage(id, file);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand("Sucesso").toUri();
+		URI uri = service.uploadPicture(file, id);
 		return ResponseEntity.created(uri).build();
 	}
 	
@@ -85,15 +82,15 @@ public class CategoryResource {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@GetMapping("/{image}/image")
+	/*@GetMapping("/{image}/image")
 	@PreAuthorize("hasAnyRole('DEV','USER')")
 	public ResponseEntity<Map<String, String>> getImageByItem(@PathVariable("image") String image) {
 		Map<String, String> jsonMap = this.service.getImage(image);
 		return ResponseEntity.status(HttpStatus.OK).body(jsonMap);
-	}
+	}*/
 	
 	@GetMapping(value= "/{id}")
-	@PreAuthorize("hasAnyRole('DEV','USER')")
+	@PreAuthorize("hasAnyRole('DEV','USER','ADMIN')")
 	public ResponseEntity<?> busca(@PathVariable("id") Long id) {
 		
 		Category category = service.find(id);
@@ -103,7 +100,7 @@ public class CategoryResource {
 	
 	
 	@DeleteMapping(value= "/{id}")
-	@PreAuthorize("hasAnyRole('DEV')")
+	@PreAuthorize("hasAnyRole('DEV', 'ADMIN')")
 	public ResponseEntity<Void> deletar(@PathVariable("id") Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();

@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,6 +87,14 @@ public class AccountService {
 			return (char) (random.nextInt(26) + 65);
 		} else { //gera letra minuscula
 			return (char) (random.nextInt(26) + 97);
+		}
+	}
+
+	public static Account authenticated() {
+		try {			
+			return (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		} catch (Exception e) {
+			return null;
 		}
 	}
 }

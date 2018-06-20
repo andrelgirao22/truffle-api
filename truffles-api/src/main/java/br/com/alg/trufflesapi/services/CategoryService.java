@@ -1,19 +1,13 @@
 package br.com.alg.trufflesapi.services;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Base64;
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
+import java.net.URI;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -29,6 +23,18 @@ public class CategoryService {
 
 	@Autowired
 	private CategoryRepository repository;
+	
+	@Autowired
+	private AmazonS3Service s3Service;
+	
+	@Value("${img.prefix.category}")
+	private String prefix;
+	
+	@Value("${img.category.size}")
+	private Integer size;
+	
+	@Autowired
+	private ImageService imageService;
 
 	public List<Category> listAll() {
 		return repository.findAll();
@@ -52,7 +58,7 @@ public class CategoryService {
 
 	public void delete(Long id) {
 		
-		removeOldImage(id + "");
+		//removeOldImage(id + "");
 		
 		find(id);
 		repository.deleteById(id);
@@ -64,7 +70,7 @@ public class CategoryService {
 	}
 
 	
-	public Map<String, String> getImage(String image) {
+	/*public Map<String, String> getImage(String image) {
 		
 		try {
 			
@@ -116,6 +122,33 @@ public class CategoryService {
 			System.out.println(e.getMessage());
 		}
 		
+	}*/
+	
+	public URI uploadPicture(MultipartFile multipartFile, Long id) {
+		
+		/*Account account = AccountService.authenticated();
+		if(account == null) {
+			throw new AuthorizationException("Acesso negado");
+		}*/
+		
+		Category category = this.find(id);
+		if(category == null) {
+			throw new CategoryNotFoundException("Objeto não encontrado " + id);
+		}
+		
+		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+		jpgImage = imageService.cropSquare(jpgImage);
+		jpgImage = imageService.resize(jpgImage, size);
+		String filename = prefix + category.getId() + ".jpg";
+		
+		InputStream is = this.imageService.getInputStream(jpgImage, "jpg");
+		
+		URI uri = this.s3Service.uploadFile(is, filename, "image");
+		
+		category.setImageUrl(uri.toString());
+		this.repository.save(category);
+		
+		return uri;
 	}
 	
 	

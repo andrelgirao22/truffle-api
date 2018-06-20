@@ -10,10 +10,15 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
+
 import br.com.alg.trufflesapi.exceptions.AccountNotFoundException;
 import br.com.alg.trufflesapi.exceptions.CategoryNotFoundException;
 import br.com.alg.trufflesapi.exceptions.CredentiaisInvalidException;
 import br.com.alg.trufflesapi.exceptions.Erro;
+import br.com.alg.trufflesapi.exceptions.FileException;
 import br.com.alg.trufflesapi.exceptions.ItemNotFoundException;
 import br.com.alg.trufflesapi.exceptions.OrderNotFoundException;
 import br.com.alg.trufflesapi.exceptions.PaymentInvalidException;
@@ -90,6 +95,39 @@ public class ResourceHandleException {
 	
 	@ExceptionHandler(PaymentInvalidException.class)
 	public ResponseEntity<Erro> handlePaymentInvalidException(PaymentInvalidException e,
+			HttpServletRequest request) {
+		Erro erro = new Erro();
+		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+	}
+	
+	@ExceptionHandler(FileException.class)
+	public ResponseEntity<Erro> file(FileException e,
+			HttpServletRequest request) {
+		Erro erro = new Erro();
+		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+	}
+	
+	@ExceptionHandler(AmazonServiceException.class)
+	public ResponseEntity<Erro> amazonService(AmazonServiceException e,
+			HttpServletRequest request) {
+		HttpStatus code = HttpStatus.valueOf(e.getErrorCode());
+		Erro erro = new Erro();
+		erro.setMessage(e.getMessage()).setStatus(code.value()).setTimestamp(new Date().getTime());
+		return ResponseEntity.status(code).body(erro);
+	}
+	
+	@ExceptionHandler(AmazonClientException.class)
+	public ResponseEntity<Erro> amazonClient(AmazonClientException e,
+			HttpServletRequest request) {
+		Erro erro = new Erro();
+		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+	}
+	
+	@ExceptionHandler(AmazonS3Exception.class)
+	public ResponseEntity<Erro> amazonS3(AmazonS3Exception e,
 			HttpServletRequest request) {
 		Erro erro = new Erro();
 		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());
