@@ -12,7 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
@@ -54,6 +57,19 @@ public class AmazonS3Service {
 		} catch (URISyntaxException e) {
 			throw new FileException("Erro ao converte URL para URI");
 		}
+	}
+	
+	public void deleteFile(String filename) {
+		try {
+			
+			LOG.info("Deleting file");
+			s3Client.deleteObject(new DeleteObjectRequest(bucketName, filename));
+			LOG.info("Delete finalizado");
+		} catch(AmazonServiceException e) {
+            throw new FileException(e.getMessage());
+        } catch(SdkClientException e) {
+            throw new FileException(e.getMessage());
+        }
 	}
 	
 }
