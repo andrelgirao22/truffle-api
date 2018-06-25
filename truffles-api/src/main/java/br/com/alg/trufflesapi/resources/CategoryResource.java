@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class CategoryResource {
 		return ResponseEntity.status(HttpStatus.OK).body(service.listAll());
 	}
 	
-	@GetMapping(value="/page")
+	/*@GetMapping(value="/page")
 	public ResponseEntity<Page<Category>> findPage(
 			@RequestParam(value="page", defaultValue="0") Integer page, 
 			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 
@@ -50,21 +51,34 @@ public class CategoryResource {
 		return ResponseEntity
 				.status(HttpStatus.OK)
 				.body(service.findPage(page, linesPerPage, orderby, direction));
+	}*/
+	
+	@GetMapping(value="/page")
+	public ResponseEntity<Page<Category>> findPageByName(
+			@RequestParam(value="page", defaultValue="0") Integer page, 
+			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 
+			@RequestParam(value="orderby", defaultValue="name") String orderby, 
+			@RequestParam(value="direction", defaultValue="ASC") String direction,
+			@RequestParam(value = "name", defaultValue="") String name) {
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(service.findPageByName(page, linesPerPage, orderby, direction, name));
 	}
 		
 	@PostMapping
-	@PreAuthorize("hasAnyRole('DEV')")
-	public ResponseEntity<Void> save(@Valid @RequestBody Category category) {
+	@PreAuthorize("hasAnyRole('DEV', 'ADMIN')")
+	public ResponseEntity<Void> save(@Valid @RequestBody Category category, HttpServletResponse response) {
 		
 		category = service.save(category);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(category.getId()).toUri();
+		
 		return ResponseEntity.created(uri).build();
 	}
 	
 	@PostMapping(value="/picture/{id}")
-	@PreAuthorize("hasAnyRole('DEV')")
-	public ResponseEntity<Void> saveImage(@Valid @RequestParam(name="file", required=true) MultipartFile file,  @PathVariable(name="id", required= true) Long id) {
+	@PreAuthorize("hasAnyRole('DEV', 'ADMIN')")
+	public ResponseEntity<Void> savePicture(@Valid @RequestParam(name="file", required=true) MultipartFile file,  @PathVariable(name="id", required= true) Long id) {
 		
 		if(file == null) return null;
 		
@@ -72,8 +86,16 @@ public class CategoryResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	@DeleteMapping(value="/picture/{id}")
+	@PreAuthorize("hasAnyRole('DEV', 'ADMIN')")
+	public ResponseEntity<Void> deletePicture(@Valid @PathVariable(name="id", required= true) Long id) {
+		
+		service.deletePicture(id, null);;
+		return ResponseEntity.noContent().build();
+	}
+	
 	@PutMapping(value="/{id}")
-	@PreAuthorize("hasAnyRole('DEV')")
+	@PreAuthorize("hasAnyRole('DEV', 'ADMIN')")
 	public ResponseEntity<Void> update(@RequestBody Category category, @PathVariable("id") Long id) {
 		category.setId(id);
 		service.update(category);

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,6 +44,11 @@ public class CategoryService {
 	public Page<Category> findPage(Integer page, Integer linesPerPage, String orderby, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderby);
 		return this.repository.findAll(pageRequest);
+	}
+	
+	public Page<Category> findPageByName(Integer page, Integer linesPerPage, String orderby, String direction, String name) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderby);
+		return this.repository.findByName(name, pageRequest);
 	}
 
 	public Category save(Category category) {
@@ -149,6 +155,10 @@ public class CategoryService {
 		this.repository.save(category);
 		
 		return uri;
+	}
+	
+	public void deletePicture(Long id, String filename) {
+		this.s3Service.deleteFile(prefix + id + ".jpg");
 	}
 	
 	

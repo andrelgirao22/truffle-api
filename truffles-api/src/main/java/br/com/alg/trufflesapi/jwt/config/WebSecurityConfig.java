@@ -1,5 +1,6 @@
 package br.com.alg.trufflesapi.jwt.config;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +19,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import br.com.alg.trufflesapi.jwt.security.TokenHelper;
 import br.com.alg.trufflesapi.jwt.security.auth.RestAuthenticationEntryPoint;
@@ -97,4 +101,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest().authenticated().and()
             .addFilterBefore(new TokenAuthenticationFilter(tokenHelper, jwtUserDetailsService), BasicAuthenticationFilter.class);
     }
+    
+    @Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration  configuration = new CorsConfiguration().applyPermitDefaultValues();
+		configuration.setAllowedMethods(Arrays.asList("POST","GET", "PUT", "DELETE", "OPTIONS"));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 }
