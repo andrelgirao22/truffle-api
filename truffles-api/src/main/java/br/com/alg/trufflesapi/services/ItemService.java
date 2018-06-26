@@ -184,8 +184,11 @@ public class ItemService {
 		return Arrays.asList(PriceType.values());
 	}
 
-	public Page<Item> findPage(Integer page, Integer linesPerPage, String orderby, String direction) {
+	public Page<Item> findPage(Integer page, Integer linesPerPage, String orderby, String direction, String search) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderby);
+		if(search != null && !search.equals("")) {
+			return this.repository.findByName(search, pageRequest);
+		}
 		return this.repository.findAll(pageRequest);
 	}
 	

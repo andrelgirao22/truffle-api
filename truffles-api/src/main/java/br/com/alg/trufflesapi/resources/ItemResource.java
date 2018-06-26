@@ -49,10 +49,11 @@ public class ItemResource {
 			@RequestParam(value="page", defaultValue="0") Integer page, 
 			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 
 			@RequestParam(value="orderby", defaultValue="name") String orderby, 
-			@RequestParam(value="direction", defaultValue="ASC") String direction) {
+			@RequestParam(value="direction", defaultValue="ASC") String direction,
+			@RequestParam(value = "search", defaultValue="") String search) {
 		return ResponseEntity
 				.status(HttpStatus.OK)
-				.body(service.findPage(page, linesPerPage, orderby, direction));
+				.body(service.findPage(page, linesPerPage, orderby, direction, search));
 	}
 	
 	@GetMapping("/price/{id}")
@@ -82,7 +83,7 @@ public class ItemResource {
 	}
 	
 	@PostMapping
-	@PreAuthorize("hasAnyRole('DEV')")
+	@PreAuthorize("hasAnyRole('DEV', 'ADMIN')")
 	public ResponseEntity<Void> save(@Valid @RequestBody Item item) {
 		
 		item = service.save(item);
