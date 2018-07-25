@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,13 +62,22 @@ public class ItemService {
 		return repository.save(item);
 	}
 
+	@Transactional
 	public void update(Item item) {
-		find(item.getId());
-		item.getPrices().forEach(price -> {
+		
+		Item newItem = find(item.getId());
+		List<Price> oldPrices = newItem.getPrices();
+		List<Price> newPrices = item.getPrices();
+		
+		oldPrices.forEach(price -> this.priceRepository.delete(price));
+		
+		newPrices.forEach(price -> {
 			price.setItem(item);
 			saveItemPrice(price, item.getId());
 		});
 		repository.save(item);
+		
+		
 	}
 
 	public void delete(Long id) {
@@ -125,61 +135,6 @@ public class ItemService {
 		return uri;
 	}
 	
-	/*public Map<String, String> getImage(String image) {
-		
-		try {
-			
-			Path path = Paths.get("imagens/item/" + image);
-			
-			File file = path.toFile();
-			
-			String encodeImage = Base64.getEncoder().withoutPadding().encodeToString(Files.readAllBytes(file.toPath()));
-			
-			Map<String, String> jsonMap = new HashMap<>();
-			jsonMap.put("image", encodeImage);
-			
-			return jsonMap;
-			
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return null;
-		}
-	}
-	
-
-	public void saveImage(String id, @Valid MultipartFile file) {
-		
-		try {
-			
-			removeOldImage(id);
-			
-			Path path = Paths.get("imagens/item/" + file.getOriginalFilename());
-			path.toFile().setExecutable(true, false);
-			
-			FileOutputStream out = new FileOutputStream(path.toFile());
-			out.write(file.getBytes());
-			out.close();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void removeOldImage(String image) {
-		
-		if(image == null) return ;
-
-		try {
-			Item item = find(Long.valueOf(image));
-			
-			Path path = Paths.get("imagens/item" + item.getImage());
-			Files.delete(path);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		
-	}
-*/
 	public List<PriceType> listPriceType() {
 		return Arrays.asList(PriceType.values());
 	}
