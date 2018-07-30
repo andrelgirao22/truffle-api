@@ -69,10 +69,13 @@ public class ItemService {
 		List<Price> oldPrices = newItem.getPrices();
 		List<Price> newPrices = item.getPrices();
 		
-		oldPrices.forEach(price -> this.priceRepository.delete(price));
+		oldPrices.forEach(price -> {
+			this.priceRepository.deleteById(price.getId());
+		});
 		
 		newPrices.forEach(price -> {
 			price.setItem(item);
+			price.setId(null);
 			saveItemPrice(price, item.getId());
 		});
 		repository.save(item);
@@ -97,9 +100,6 @@ public class ItemService {
 	public Price saveItemPrice(Price price, Long id) {
 		Item item = find(id);
 		price.setItem(item);
-		if(price.getId() == null) {
-			price.setDtStart(new Date());
-		}
 		return priceRepository.save(price);
 	}
 	
@@ -145,6 +145,10 @@ public class ItemService {
 			return this.repository.findByName(search, pageRequest);
 		}
 		return this.repository.findAll(pageRequest);
+	}
+
+	public void deletePicture(@Valid Long id, Object object) {
+		this.s3Service.deleteFile(prefix + id + ".jpg");
 	}
 	
 }

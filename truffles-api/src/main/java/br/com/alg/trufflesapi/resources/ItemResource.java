@@ -67,15 +67,6 @@ public class ItemResource {
 		return ResponseEntity.status(HttpStatus.OK).body(service.listPriceType());
 	}
 	
-	/*@GetMapping("/{image}/image")
-	@PreAuthorize("hasAnyRole('DEV','USER')")
-	public ResponseEntity<Map<String, String>> getImageByItem(@PathVariable("image") String image) {
-		Map<String, String> jsonMap = this.service.getImage(image);
-		
-		CacheControl cacheControl = CacheControl.maxAge(60, TimeUnit.SECONDS);
-		return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(jsonMap);
-		
-	}*/
 	
 	@GetMapping("/category/{id}")
 	public ResponseEntity<List<Item>> listByCategory(@Valid @PathVariable("id") Long id) {
@@ -133,9 +124,17 @@ public class ItemResource {
 	
 	
 	@DeleteMapping(value= "/{id}")
-	@PreAuthorize("hasAnyRole('DEV')")
+	@PreAuthorize("hasAnyRole('DEV', 'ADMIN')")
 	public ResponseEntity<Void> deletar(@PathVariable("id") Long id) {
 		service.delete(id);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@DeleteMapping(value="/picture/{id}")
+	@PreAuthorize("hasAnyRole('DEV', 'ADMIN')")
+	public ResponseEntity<Void> deletePicture(@Valid @PathVariable(name="id", required= true) Long id) {
+		
+		service.deletePicture(id, null);;
 		return ResponseEntity.noContent().build();
 	}
 }

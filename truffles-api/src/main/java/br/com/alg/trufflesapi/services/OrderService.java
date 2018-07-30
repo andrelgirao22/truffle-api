@@ -7,13 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.alg.trufflesapi.exceptions.OrderNotFoundException;
-import br.com.alg.trufflesapi.exceptions.PaymentInvalidException;
 import br.com.alg.trufflesapi.model.Account;
-import br.com.alg.trufflesapi.model.Item;
 import br.com.alg.trufflesapi.model.Order;
 import br.com.alg.trufflesapi.model.OrderItem;
 import br.com.alg.trufflesapi.model.Payment;
-import br.com.alg.trufflesapi.model.Price;
 import br.com.alg.trufflesapi.repositories.OrderItemRepository;
 import br.com.alg.trufflesapi.repositories.OrderRepository;
 import br.com.alg.trufflesapi.repositories.PaymentRepository;
@@ -32,9 +29,9 @@ public class OrderService {
 	
 	@Autowired
 	private AccountService accountService;
-	
+	/*
 	@Autowired
-	private ItemService itemService;
+	private ItemService itemService;*/
 
 	public List<Order> listAll() {
 		return orderRepository.findAll();
@@ -42,28 +39,38 @@ public class OrderService {
 
 	public Order save(Order order) {
 		
-		if(order.getAccount() != null && order.getAccount().getId() != null) {
-			Account account = this.accountService.find(order.getAccount().getId());
-			order.setAccount(account);
+		List<Payment> payments = order.getPayments();
+		List<OrderItem> orderItens = order.getOrderItens();		
+		
+		order.setId(null);
+		order.setDate(new Date());
+		
+		Account account = this.accountService.find(order.getAccount().getId());
+		order.setAccount(account);
+		
+		for(Payment payment: payments) {
+			payment.setOrder(order);
+			payment.setDataPayment(new Date());			
 		}
 		
-		List<OrderItem> orderItens = order.getOrderItens();
-		List<Payment> payments = order.getPayments();
+		for(OrderItem item: orderItens) {
+			item.setDate(new Date());
+			item.setOrder(order);
+		}
 		
-		order.setOrderItens(null);
-		order.setPayments(null);
-		order.setDate(new Date());
-		Order newOrder = orderRepository.save(order);
+		order = orderRepository.save(order);
+		this.orderItemRepository.saveAll(orderItens);
+		this.paymentRepository.saveAll(payments);
 		
-		orderItens.forEach(orderItem ->  {			
+		/*orderItens.forEach(orderItem ->  {			
 			this.save(orderItem, newOrder.getId());
 		});
 		
 		payments.forEach(payment -> {
 			this.save(payment, newOrder.getId());
-		});
+		});*/
 		
-		return newOrder;
+		return order;
 	}
 	
 	public OrderItem save(OrderItem orderItem, Long id) {
@@ -116,7 +123,7 @@ public class OrderService {
 		return orderRepository.findById(id).orElseThrow(new OrderNotFoundException("Pedido não encontrado"));
 	}
 	
-	private void checkPayment(Payment payment, Order order) {
+	/*private void checkPayment(Payment payment, Order order) {
 		
 		Double totalPayment = getTotalPaymentOrder(order);
 		Double totalOrder = order.getOrderValue();
@@ -124,7 +131,7 @@ public class OrderService {
 		if(value > (totalOrder - totalPayment)) {
 			throw new PaymentInvalidException("Valor Pagamento superior ao valor do pedido");
 		}
-	}
+	}*/
 	
 	public List<OrderItem> findItensByOrder(Order order) {
 		return this.orderItemRepository.findByOrder(order);
