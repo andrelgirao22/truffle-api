@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.alg.trufflesapi.exceptions.OrderNotFoundException;
@@ -139,5 +142,10 @@ public class OrderService {
 	
 	public List<Payment> findPaymentByOrder(Order order) {
 		return this.paymentRepository.findByOrder(order);
+	}
+
+	public Page<Order> findPageByName(Integer page, Integer linesPerPage, String orderby, String direction, String name) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderby);
+		return this.orderRepository.findAll(pageRequest);
 	}
 }

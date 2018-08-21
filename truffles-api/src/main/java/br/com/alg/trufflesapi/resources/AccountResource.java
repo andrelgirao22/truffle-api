@@ -36,7 +36,10 @@ public class AccountResource {
 	
 	@PostMapping
 	@PreAuthorize("hasRole('ADMIN','USER')")
-	public ResponseEntity<Void> saveAccount(@RequestBody Account account) {
+	public ResponseEntity<Void> saveAccount(@RequestBody AccountDTO accountDto) {
+		
+		Account account = this.service.fromDto(accountDto);
+		
 		account = this.service.save(account);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(account.getId()).toUri();
@@ -44,7 +47,6 @@ public class AccountResource {
 	}
 	
 	@GetMapping(value="/{email}")
-	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<Account> findByEmail(@PathVariable("email") String email) {
 		Account account = this.service.findByEmail(email);
 		return ResponseEntity.status(HttpStatus.OK).body(account);

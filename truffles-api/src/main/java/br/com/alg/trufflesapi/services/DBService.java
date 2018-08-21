@@ -1,7 +1,6 @@
 package br.com.alg.trufflesapi.services;
 
 import java.util.Arrays;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,23 +35,19 @@ public class DBService {
 			Group groupDev = new Group(null, "ROLE_DEV");
 			Group groupUser = new Group(null, "ROLE_USER");
 			
-			Date date = new Date();
 			
 			Account accountAdmin = new Account(null, 
 							"Administrador", "admin@truffle.com.br", 
-							"{bcrypt}$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra", 
-							null, date, null, true);
+							"{bcrypt}$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra","");
 			
 			Account accountDev = new Account(null, 
 					"Developer", "dev@truffle.com.br", 
-					"{bcrypt}$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra", 
-					null, date, null, true);
+					"{bcrypt}$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra","");
 			
 			
 			Account accountUser = new Account(null, 
 					"User", "user@truffle.com.br", 
-					"{bcrypt}$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra", 
-					null, date, null, true);
+					"{bcrypt}$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra", "");
 			
 			groupAdmin.getAccounts().add(accountAdmin);
 			groupUser.getAccounts().add(accountUser);

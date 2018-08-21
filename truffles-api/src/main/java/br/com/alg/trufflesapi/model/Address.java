@@ -34,9 +34,13 @@ public class Address implements Serializable {
 	@Column(name="tx_neighborhood")
 	private String neighborhood;
 	
-	@Column(name="tx_city")
-	private String city;
+	@Column(name="tx_postal_code")
+	private String postalCode;
 	
+	@ManyToOne
+	@JoinColumn(name="city_id")
+	private City city;
+
 	@Column(name="tx_state")
 	private String state;
 	
@@ -46,8 +50,8 @@ public class Address implements Serializable {
 	public Address() {
 	}
 	
-	public Address(Long id, Account account, String addressName, String addressNumber, String neighborhood, String city,
-			String state, String complement) {
+	public Address(Long id, Account account, String addressName, String addressNumber, String neighborhood, City city, 
+			String complement, String postalCode) {
 		super();
 		this.id = id;
 		this.account = account;
@@ -55,11 +59,9 @@ public class Address implements Serializable {
 		this.addressNumber = addressNumber;
 		this.neighborhood = neighborhood;
 		this.city = city;
-		this.state = state;
 		this.complement = complement;
+		this.postalCode = postalCode;
 	}
-
-
 
 	public Long getId() {
 		return id;
@@ -101,14 +103,6 @@ public class Address implements Serializable {
 		this.neighborhood = neighborhood;
 	}
 
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
 	public String getState() {
 		return state;
 	}
@@ -123,6 +117,14 @@ public class Address implements Serializable {
 
 	public void setComplement(String complement) {
 		this.complement = complement;
+	}
+	
+	public String getPostalCode() {
+		return postalCode;
+	}
+
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +44,18 @@ public class OrderResource {
 	@GetMapping
 	public ResponseEntity<List<Order>> listItem() {
 		return ResponseEntity.status(HttpStatus.OK).body(service.listAll());
+	}
+	
+	@GetMapping(value="/page")
+	public ResponseEntity<Page<Order>> findPageByName(
+			@RequestParam(value="page", defaultValue="0") Integer page, 
+			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 
+			@RequestParam(value="orderby", defaultValue="name") String orderby, 
+			@RequestParam(value="direction", defaultValue="ASC") String direction,
+			@RequestParam(value = "name", defaultValue="") String name) {
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(service.findPageByName(page, linesPerPage, orderby, direction, name));
 	}
 	
 	@PostMapping

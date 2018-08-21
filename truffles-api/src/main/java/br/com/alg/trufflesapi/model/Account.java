@@ -60,8 +60,22 @@ public class Account implements Serializable, UserDetails {
 	public Account() {
 	}
 	
+	public Account(Long id, String name, String email, String password, String register) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.register = register;
+		this.dtStart = new Date();
+		this.status = true;
+	}
+
 	@Column(name="tx_image_user")
 	private String userImage;
+	
+	@Column(name="tx_register")
+	private String register;
 	
 	@OneToMany(mappedBy="account")
 	private List<Address> addresses = new ArrayList<>();
@@ -80,19 +94,6 @@ public class Account implements Serializable, UserDetails {
 	@Column(name = "dt_last_password_reset")
 	private Timestamp lastPasswordResetDate;
 	
-	public Account(Long id, String name, String email, String password, String userImage,
-			Date dtStart, Date dtEnd, boolean status) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.password = password;
-		this.userImage = userImage;
-		this.dtStart = dtStart;
-		this.dtEnd = dtEnd;
-		this.status = status;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -159,6 +160,14 @@ public class Account implements Serializable, UserDetails {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getRegister() {
+		return register;
+	}
+
+	public void setRegister(String register) {
+		this.register = register;
 	}
 
 	@Override

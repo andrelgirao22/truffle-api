@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.alg.trufflesapi.exceptions.AccountNotFoundException;
 import br.com.alg.trufflesapi.model.Account;
+import br.com.alg.trufflesapi.model.Address;
+import br.com.alg.trufflesapi.model.City;
 import br.com.alg.trufflesapi.model.dto.AccountDTO;
 import br.com.alg.trufflesapi.repositories.AccountRepository;
 
@@ -35,6 +37,22 @@ public class AccountService {
 			account.setDtStart(new Date());
 		}
 		return repository.save(account);
+	}
+	
+	public Account fromDto(AccountDTO accountDTO) {
+		Account account = 
+				new Account(null, accountDTO.getName(), accountDTO.getEmail(), accountDTO.getPassword(), accountDTO.getRegister());
+		
+		City city = new City(accountDTO.getCityId(), null, null);
+		
+		Address address = 
+				new Address(null, account, accountDTO.getAddressName(), 
+						accountDTO.getAddressNumber(), accountDTO.getNeighborhood(), 
+						city, accountDTO.getComplement(), accountDTO.getPostalCode());
+		
+		account.getAddresses().add(address);
+		
+		return account;
 	}
 
 	@Transactional
