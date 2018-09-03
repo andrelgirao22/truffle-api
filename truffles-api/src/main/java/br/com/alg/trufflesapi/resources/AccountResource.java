@@ -35,7 +35,6 @@ public class AccountResource {
 	}
 	
 	@PostMapping
-	@PreAuthorize("hasRole('ADMIN','USER')")
 	public ResponseEntity<Void> saveAccount(@RequestBody AccountDTO accountDto) {
 		
 		Account account = this.service.fromDto(accountDto);
