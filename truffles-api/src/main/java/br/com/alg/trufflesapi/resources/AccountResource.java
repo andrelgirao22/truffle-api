@@ -2,6 +2,7 @@ package br.com.alg.trufflesapi.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,8 +48,8 @@ public class AccountResource {
 	
 	@GetMapping(value="/{email}")
 	public ResponseEntity<Account> findByEmail(@PathVariable("email") String email) {
-		Account account = this.service.findByEmail(email);
-		return ResponseEntity.status(HttpStatus.OK).body(account);
+		Optional<Account> account = this.service.findByEmail(email);
+		return ResponseEntity.status(HttpStatus.OK).body(account.get());
 	}
 	
 }

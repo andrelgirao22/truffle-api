@@ -14,6 +14,7 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 
+import br.com.alg.trufflesapi.exceptions.AccountEmailExistException;
 import br.com.alg.trufflesapi.exceptions.AccountNotFoundException;
 import br.com.alg.trufflesapi.exceptions.CategoryNotFoundException;
 import br.com.alg.trufflesapi.exceptions.CredentiaisInvalidException;
@@ -55,6 +56,14 @@ public class ResourceHandleException {
 	
 	@ExceptionHandler(AccountNotFoundException.class)
 	public ResponseEntity<Erro> handleAccountNotFoudException(AccountNotFoundException e,
+			HttpServletRequest request) {
+		Erro erro = new Erro();
+		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+	}
+	
+	@ExceptionHandler(AccountEmailExistException.class)
+	public ResponseEntity<Erro> handleAccountNotFoudException(AccountEmailExistException e,
 			HttpServletRequest request) {
 		Erro erro = new Erro();
 		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());

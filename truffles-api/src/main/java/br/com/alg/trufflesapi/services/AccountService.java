@@ -2,6 +2,7 @@ package br.com.alg.trufflesapi.services;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -11,10 +12,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.alg.trufflesapi.exceptions.AccountEmailExistException;
 import br.com.alg.trufflesapi.exceptions.AccountNotFoundException;
 import br.com.alg.trufflesapi.model.Account;
 import br.com.alg.trufflesapi.model.Address;
 import br.com.alg.trufflesapi.model.City;
+import br.com.alg.trufflesapi.model.Group;
 import br.com.alg.trufflesapi.model.dto.AccountDTO;
 import br.com.alg.trufflesapi.repositories.AccountRepository;
 
@@ -23,6 +26,9 @@ public class AccountService {
 
 	@Autowired
 	private AccountRepository repository;
+	
+	@Autowired
+	private GroupService groupService;
 
 	public List<AccountDTO> listAll() {
 		return repository.findAll().stream().map(account -> new AccountDTO(account)).collect(Collectors.toList());
@@ -30,11 +36,18 @@ public class AccountService {
 
 	public Account save(Account account) {
 		
-		if(account.getId() == null) {			
+		Optional<Account> optional = this.findByEmail(account.getEmail());
+		
+		if(optional.isPresent()) {
+			throw new AccountEmailExistException("Email já cadastrado");
+		}
+		
+		if(account.getId() == null) {
+			Group userGroup = this.groupService.findByName("ROLE_USER");
 			String password = account.getPassword();
-			password = new BCryptPasswordEncoder().encode(password);
-			account.setPassword(password);
+			account.setPassword(new BCryptPasswordEncoder().encode(password));
 			account.setDtStart(new Date());
+			account.getGroups().add(userGroup);
 		}
 		return repository.save(account);
 	}
@@ -75,7 +88,7 @@ public class AccountService {
 				.orElseThrow(new AccountNotFoundException("Conta não encontrada."));
 	}
 
-	public Account findByEmail(String email) {
+	public Optional<Account> findByEmail(String email) {
 		return repository.findByEmail(email);
 	}
 

@@ -35,7 +35,6 @@ public class DBService {
 			Group groupDev = new Group(null, "ROLE_DEV");
 			Group groupUser = new Group(null, "ROLE_USER");
 			
-			
 			Account accountAdmin = new Account(null, 
 							"Administrador", "admin@truffle.com.br", 
 							"{bcrypt}$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra","");

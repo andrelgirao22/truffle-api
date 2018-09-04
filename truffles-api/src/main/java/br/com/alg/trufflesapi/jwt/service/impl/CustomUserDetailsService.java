@@ -1,5 +1,7 @@
 package br.com.alg.trufflesapi.jwt.service.impl;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
@@ -36,12 +38,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Account account = accountService.findByEmail(email);
-        if (account == null) {
-            throw new UsernameNotFoundException(String.format("No user found with username '%s'.", email));
-        } else {
-            return account;
-        }
+        Optional<Account> account = accountService.findByEmail(email);
+        return account.get();
     }
 
     public void changePassword(String oldPassword, String newPassword) {
@@ -70,11 +68,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	public String forgotPassword(@Valid AccountDTO accountDto) {
 		
-		Account account = this.accountService.findByEmail(accountDto.getEmail());
+		Account account = this.accountService.findByEmail(accountDto.getEmail()).get();
 		
-		if(account == null) {
+		/*if(account == null) {
 			throw new AccountNotFoundException("Email não encontrado");
-		}
+		}*/
 		
 		String newPassword = this.accountService.generateNewPassword();
 		
