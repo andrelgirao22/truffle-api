@@ -72,9 +72,8 @@ public class AuthenticationResource {
         String authToken = tokenHelper.getToken( request );
 
         if (authToken != null && principal != null) {
-
-            // TODO check user password last update
-        	Account account = (Account) principal;
+        	
+        	Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String refreshedToken = tokenHelper.refreshToken(authToken);
             int expiresIn = tokenHelper.getExpiredIn();
 

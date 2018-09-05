@@ -22,6 +22,10 @@ public class State implements Serializable {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	private Integer ibgeCode;
+	
+	private String initial;
+	
 	private String name;
 	
 	@OneToMany(mappedBy="state")
@@ -37,8 +41,6 @@ public class State implements Serializable {
 		this.name = name;
 	}
 
-
-
 	public Long getId() {
 		return id;
 	}
@@ -53,6 +55,22 @@ public class State implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Integer getIbgeCode() {
+		return ibgeCode;
+	}
+
+	public void setIbgeCode(Integer ibgeCode) {
+		this.ibgeCode = ibgeCode;
+	}
+	
+	public String getInitial() {
+		return initial;
+	}
+
+	public void setInitial(String initial) {
+		this.initial = initial;
 	}
 
 	public List<City> getCities() {
