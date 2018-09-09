@@ -46,7 +46,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	};
 	
 	private final String GET_MATCHERS [] = {
-			"/category/**",
 			"/webjars/**",
             "/*.html",
             "/favicon.ico",
