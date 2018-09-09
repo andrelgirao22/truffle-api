@@ -45,7 +45,7 @@ public class AccountService {
 		if(account.getId() == null) {
 			Group userGroup = this.groupService.findByName("ROLE_USER");
 			String password = account.getPassword();
-			account.setPassword(new BCryptPasswordEncoder().encode(password));
+			account.setPassword("{bcrypt}" + new BCryptPasswordEncoder().encode(password));
 			account.setDtStart(new Date());
 			account.getGroups().add(userGroup);
 		}
