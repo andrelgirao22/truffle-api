@@ -1,17 +1,12 @@
 package br.com.alg.trufflesapi.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="tb_state")
@@ -28,9 +23,9 @@ public class State implements Serializable {
 	
 	private String name;
 	
-	@OneToMany(mappedBy="state")
+	/*@OneToMany(mappedBy="state")
 	@JsonIgnore
-	private List<City> cities = new ArrayList<>();
+	private List<City> cities = new ArrayList<>();*/
 
 	public State() {
 	}
@@ -71,14 +66,6 @@ public class State implements Serializable {
 
 	public void setInitial(String initial) {
 		this.initial = initial;
-	}
-
-	public List<City> getCities() {
-		return cities;
-	}
-
-	public void setCities(List<City> cities) {
-		this.cities = cities;
 	}
 
 	@Override

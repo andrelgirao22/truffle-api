@@ -50,6 +50,9 @@ public class Account implements Serializable, UserDetails {
 	@Column(name="tx_password")
 	private String password;
 	
+	@Column(name="tx_image_url")
+	private String imageUrl;
+	
 	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	@JsonIgnore
 	@JoinTable(name="tb_account_groups",
@@ -91,6 +94,14 @@ public class Account implements Serializable, UserDetails {
 	
 	@Column(name="bl_status")
 	private boolean status;
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
 
 	@Column(name = "dt_last_password_reset")
 	private Timestamp lastPasswordResetDate;

@@ -5,12 +5,17 @@ import java.io.Serializable;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.alg.trufflesapi.model.Account;
+import br.com.alg.trufflesapi.model.Address;
 
 public class AccountDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
+	private Long id;
+	
 	@NotEmpty
 	private String name;
 	
@@ -18,6 +23,7 @@ public class AccountDTO implements Serializable {
 	@Email(message="email inválido")
 	private String email;
 	
+	@JsonIgnore
 	private String password;
 	
 	private String addressName;
@@ -26,7 +32,7 @@ public class AccountDTO implements Serializable {
 	
 	private String neighborhood;
 	
-	private Long cityId;
+	private String city;
 	
 	private String state;
 	
@@ -41,11 +47,29 @@ public class AccountDTO implements Serializable {
 	}
 	
 	public AccountDTO(Account account) {
+		this.id = account.getId();
 		this.name = account.getName();
 		this.email = account.getEmail();
 		this.password = account.getPassword();
+		if(account.getAddresses().size() > 0) {
+			Address address = account.getAddresses().get(0);
+			this.addressName = address.getAddressName();
+			this.addressNumber = address.getAddressNumber();
+			this.neighborhood = address.getNeighborhood();
+			this.postalCode = address.getPostalCode();
+			this.complement = address.getComplement();
+			this.state = address.getState();
+		}
 	}
 	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -100,12 +124,12 @@ public class AccountDTO implements Serializable {
 	}
 
 
-	public Long getCityId() {
-		return cityId;
+	public String getCity() {
+		return city;
 	}
 
-	public void setCityId(Long cityId) {
-		this.cityId = cityId;
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public String getState() {

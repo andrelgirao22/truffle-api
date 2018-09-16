@@ -37,9 +37,8 @@ public class Address implements Serializable {
 	@Column(name="tx_postal_code")
 	private String postalCode;
 	
-	@ManyToOne
-	@JoinColumn(name="city_id")
-	private City city;
+	@Column(name="tx_city")
+	private String city;
 
 	@Column(name="tx_state")
 	private String state;
@@ -50,8 +49,8 @@ public class Address implements Serializable {
 	public Address() {
 	}
 	
-	public Address(Long id, Account account, String addressName, String addressNumber, String neighborhood, City city, 
-			String complement, String postalCode) {
+	public Address(Long id, Account account, String addressName, String addressNumber, String neighborhood, String city, 
+			String complement, String postalCode, String state) {
 		super();
 		this.id = id;
 		this.account = account;
@@ -59,6 +58,7 @@ public class Address implements Serializable {
 		this.addressNumber = addressNumber;
 		this.neighborhood = neighborhood;
 		this.city = city;
+		this.state = state;
 		this.complement = complement;
 		this.postalCode = postalCode;
 	}
@@ -101,6 +101,14 @@ public class Address implements Serializable {
 
 	public void setNeighborhood(String neighborhood) {
 		this.neighborhood = neighborhood;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public String getState() {

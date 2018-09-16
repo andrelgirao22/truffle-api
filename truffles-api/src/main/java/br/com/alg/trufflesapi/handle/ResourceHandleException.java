@@ -18,6 +18,7 @@ import com.amazonaws.services.s3.model.AmazonS3Exception;
 import br.com.alg.trufflesapi.exceptions.AccountEmailExistException;
 import br.com.alg.trufflesapi.exceptions.AccountNotFoundException;
 import br.com.alg.trufflesapi.exceptions.CategoryNotFoundException;
+import br.com.alg.trufflesapi.exceptions.CityNotFoundException;
 import br.com.alg.trufflesapi.exceptions.CredentiaisInvalidException;
 import br.com.alg.trufflesapi.exceptions.Erro;
 import br.com.alg.trufflesapi.exceptions.FileException;
@@ -112,6 +113,14 @@ public class ResourceHandleException {
 	
 	@ExceptionHandler(PaymentInvalidException.class)
 	public ResponseEntity<Erro> handlePaymentInvalidException(PaymentInvalidException e,
+			HttpServletRequest request) {
+		Erro erro = new Erro();
+		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+	}
+	
+	@ExceptionHandler(CityNotFoundException.class)
+	public ResponseEntity<Erro> handleCityNotFoudException(CityNotFoundException e,
 			HttpServletRequest request) {
 		Erro erro = new Erro();
 		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());
