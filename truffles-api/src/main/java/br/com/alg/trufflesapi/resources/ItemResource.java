@@ -29,6 +29,7 @@ import br.com.alg.trufflesapi.exceptions.FileException;
 import br.com.alg.trufflesapi.model.Item;
 import br.com.alg.trufflesapi.model.Price;
 import br.com.alg.trufflesapi.model.PriceType;
+import br.com.alg.trufflesapi.model.dto.ItemDTO;
 import br.com.alg.trufflesapi.services.ItemService;
 
 @RestController
@@ -69,7 +70,7 @@ public class ItemResource {
 	
 	
 	@GetMapping("/category/{id}")
-	public ResponseEntity<List<Item>> listByCategory(@Valid @PathVariable("id") Long id) {
+	public ResponseEntity<List<ItemDTO>> listByCategory(@Valid @PathVariable("id") Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(service.findByCategory(id));
 	}
 	

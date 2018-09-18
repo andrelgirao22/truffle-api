@@ -6,6 +6,7 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -25,6 +26,7 @@ import br.com.alg.trufflesapi.model.Item;
 import br.com.alg.trufflesapi.model.Price;
 import br.com.alg.trufflesapi.model.PriceType;
 import br.com.alg.trufflesapi.model.StatusItem;
+import br.com.alg.trufflesapi.model.dto.ItemDTO;
 import br.com.alg.trufflesapi.repositories.ItemRepository;
 import br.com.alg.trufflesapi.repositories.PriceRepository;
 
@@ -108,9 +110,13 @@ public class ItemService {
 		return this.findPrices(item);
 	}
 
-	public List<Item> findByCategory(@Valid Long id) {
-		Category category = this.categoryService.find(id);  
-		return this.repository.findByCategory(category);
+	public List<ItemDTO> findByCategory(Long id) {
+		Category category = this.categoryService.find(id);
+		List<ItemDTO> items = this.repository.findByCategory(category)
+				.stream()
+				.filter(item -> item.getStatus().equals(StatusItem.PENDENTE))
+				.map(i -> new ItemDTO(i)).collect(Collectors.toList());
+		return items;
 	}
 	
 	public URI uploadPicture(MultipartFile file, Long id) {
