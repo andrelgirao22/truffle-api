@@ -81,7 +81,7 @@ public class Account implements Serializable, UserDetails {
 	private String register;
 	
 	@OneToMany(mappedBy="account")
-	@JsonIgnore
+	//@JsonIgnore
 	private List<Address> addresses = new ArrayList<>();
 
 	@Column(name="dt_start")

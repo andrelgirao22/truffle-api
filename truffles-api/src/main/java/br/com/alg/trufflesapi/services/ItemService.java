@@ -94,6 +94,11 @@ public class ItemService {
 		return repository.findById(id).orElseThrow(new ItemNotFoundException("Item não encontrado."));
 	}
 	
+	public ItemDTO findItemDto(Long id) {
+		Item item = this.find(id);
+		return new ItemDTO(item);
+	}
+	
 	public List<Price> findPrices(Item item) {
 		return 
 				priceRepository.findByItem(item).orElseThrow((new PriceNotFoudException("Item " + item.getId() + " " + item.getName()  + " sem preço ")));
@@ -114,7 +119,7 @@ public class ItemService {
 		Category category = this.categoryService.find(id);
 		List<ItemDTO> items = this.repository.findByCategory(category)
 				.stream()
-				.filter(item -> item.getStatus().equals(StatusItem.PENDENTE))
+				.filter(item -> item.getStatus().equals(StatusItem.PUBLICADO))
 				.map(i -> new ItemDTO(i)).collect(Collectors.toList());
 		return items;
 	}

@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="tb_address")
 public class Address implements Serializable {
@@ -23,6 +25,7 @@ public class Address implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name="account_id")
+	@JsonIgnore
 	private Account account;
 	
 	@Column(name="tx_address_name")
@@ -49,18 +52,17 @@ public class Address implements Serializable {
 	public Address() {
 	}
 	
-	public Address(Long id, Account account, String addressName, String addressNumber, String neighborhood, String city, 
-			String complement, String postalCode, String state) {
+	public Address(Long id, Account account, Address address) {
 		super();
 		this.id = id;
 		this.account = account;
-		this.addressName = addressName;
-		this.addressNumber = addressNumber;
-		this.neighborhood = neighborhood;
-		this.city = city;
-		this.state = state;
-		this.complement = complement;
-		this.postalCode = postalCode;
+		this.addressName = address.getAddressName();
+		this.addressNumber = address.getAddressNumber();
+		this.neighborhood = address.getNeighborhood();
+		this.city = address.getCity();
+		this.state = address.getState();
+		this.complement = address.getComplement();
+		this.postalCode = address.getPostalCode();
 	}
 
 	public Long getId() {

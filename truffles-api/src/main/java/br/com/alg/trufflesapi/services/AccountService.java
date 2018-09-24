@@ -24,12 +24,16 @@ import br.com.alg.trufflesapi.model.Address;
 import br.com.alg.trufflesapi.model.Group;
 import br.com.alg.trufflesapi.model.dto.AccountDTO;
 import br.com.alg.trufflesapi.repositories.AccountRepository;
+import br.com.alg.trufflesapi.repositories.AddressRepository;
 
 @Service
 public class AccountService {
 
 	@Autowired
 	private AccountRepository repository;
+	
+	@Autowired
+	private AddressRepository addressRepository;
 	
 	@Autowired
 	private GroupService groupService;
@@ -63,9 +67,17 @@ public class AccountService {
 			String password = account.getPassword();
 			account.setPassword("{bcrypt}" + new BCryptPasswordEncoder().encode(password));
 			account.setDtStart(new Date());
-			account.getGroups().add(userGroup);
+			account.getGroups().add(userGroup);		
 		}
-		return repository.save(account);
+		
+		final Account accountSaved = repository.saveAndFlush(account);
+		
+		account.getAddresses().forEach(address -> {
+			address.setAccount(accountSaved);
+			this.addressRepository.save(address);
+		});
+		
+		return account;
 	}
 	
 	public Account fromDto(AccountDTO accountDTO) {
@@ -73,11 +85,9 @@ public class AccountService {
 				new Account(null, accountDTO.getName(), accountDTO.getEmail(), accountDTO.getPassword(), accountDTO.getRegister());
 		
 		Address address = 
-				new Address(null, account, accountDTO.getAddressName(), 
-						accountDTO.getAddressNumber(), accountDTO.getNeighborhood(), 
-						accountDTO.getCity(), accountDTO.getComplement(), accountDTO.getPostalCode(),
-						accountDTO.getState());
+				new Address(null, account, accountDTO.getAddress());
 		
+		address.setAccount(account);
 		account.getAddresses().add(address);
 		
 		return account;

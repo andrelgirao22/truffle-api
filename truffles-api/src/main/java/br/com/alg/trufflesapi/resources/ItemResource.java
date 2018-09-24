@@ -116,9 +116,9 @@ public class ItemResource {
 	}
 	
 	@GetMapping(value= "/{id}")
-	public ResponseEntity<?> busca(@PathVariable("id") Long id) {
+	public ResponseEntity<ItemDTO> busca(@PathVariable("id") Long id) {
 		
-		Item item = service.find(id);
+		ItemDTO item = service.findItemDto(id);
 		CacheControl cacheControl = CacheControl.maxAge(20, TimeUnit.SECONDS);
 		return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(item);
 	}

@@ -23,25 +23,12 @@ public class AccountDTO implements Serializable {
 	@Email(message="email inválido")
 	private String email;
 	
-	@JsonIgnore
+	private Address address;
+	
 	private String password;
-	
-	private String addressName;
-	
-	private String addressNumber;
-	
-	private String neighborhood;
-	
-	private String city;
-	
-	private String state;
-	
-	private String complement;
 
 	private String register;
 
-	private String postalCode;
-	
 	public AccountDTO() {
 		
 	}
@@ -53,12 +40,7 @@ public class AccountDTO implements Serializable {
 		this.password = account.getPassword();
 		if(account.getAddresses().size() > 0) {
 			Address address = account.getAddresses().get(0);
-			this.addressName = address.getAddressName();
-			this.addressNumber = address.getAddressNumber();
-			this.neighborhood = address.getNeighborhood();
-			this.postalCode = address.getPostalCode();
-			this.complement = address.getComplement();
-			this.state = address.getState();
+			this.address = address;
 		}
 	}
 	
@@ -99,61 +81,12 @@ public class AccountDTO implements Serializable {
 		return this.register;
 	}
 
-	public String getAddressName() {
-		return addressName;
+	public Address getAddress() {
+		return address;
 	}
 
-	public void setAddressName(String addressName) {
-		this.addressName = addressName;
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
-	public String getAddressNumber() {
-		return addressNumber;
-	}
-
-	public void setAddressNumber(String addressNumber) {
-		this.addressNumber = addressNumber;
-	}
-
-	public String getNeighborhood() {
-		return neighborhood;
-	}
-
-	public void setNeighborhood(String neighborhood) {
-		this.neighborhood = neighborhood;
-	}
-
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public String getComplement() {
-		return complement;
-	}
-
-	public void setComplement(String complement) {
-		this.complement = complement;
-	}
-
-	public void setPostalCode(String postalCode) {
-		this.postalCode = postalCode;
-	}
-	
-	public String getPostalCode() {
-		return postalCode;
-	}
-	
 }
