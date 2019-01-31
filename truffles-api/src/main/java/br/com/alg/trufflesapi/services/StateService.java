@@ -25,16 +25,15 @@ public class StateService {
 		return repository.findAll();
 	}
 	
-	public City findCityByName(String name) {		
-		return 
-			this.cityRepository.findByName(name).orElseThrow(new CityNotFoundException("Cidade não encontrada"));
+	public State findByUf(String uf) {
+		return this.repository.findByUf(uf).orElseThrow(new StateNotFoundException("Estado não encontrado"));
 	}
-
-	public City findCity(String city, String state) {
-		State s = 
-				repository.findByInitial(state).orElseThrow(new StateNotFoundException("Estado não encontrado."));
-		City c = new City(null, city, s);
-		return c;
+	
+	public List<City> findCitiesByUf(String uf) {
+		State state = this.findByUf(uf);
+		List<City> cities =  
+				cityRepository.findByState(state).orElseThrow(new CityNotFoundException("Estado não encontrado."));
+		return cities;
 	}
 	
 	

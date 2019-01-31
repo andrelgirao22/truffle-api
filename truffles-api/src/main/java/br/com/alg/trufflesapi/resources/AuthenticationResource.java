@@ -59,7 +59,7 @@ public class AuthenticationResource {
 		Account account = (Account) authentication.getPrincipal();
 		String jws = tokenHelper.generateToken(account.getUsername());
 		int expiresIn = tokenHelper.getExpiredIn();
-		return ResponseEntity.ok(new UserTokenState(account,jws, expiresIn));
+		return ResponseEntity.ok(new UserTokenState(jws, expiresIn));
 	}
 	
 	 	
@@ -73,11 +73,11 @@ public class AuthenticationResource {
 
         if (authToken != null && principal != null) {
         	
-        	Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        	//Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String refreshedToken = tokenHelper.refreshToken(authToken);
             int expiresIn = tokenHelper.getExpiredIn();
 
-            return ResponseEntity.ok(new UserTokenState(account,refreshedToken, expiresIn));
+            return ResponseEntity.ok(new UserTokenState(refreshedToken, expiresIn));
         } else {
             UserTokenState userTokenState = new UserTokenState();
             return ResponseEntity.accepted().body(userTokenState);

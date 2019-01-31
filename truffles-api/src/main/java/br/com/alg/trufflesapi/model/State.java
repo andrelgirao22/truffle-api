@@ -1,12 +1,17 @@
 package br.com.alg.trufflesapi.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="tb_state")
@@ -17,15 +22,15 @@ public class State implements Serializable {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	private Integer ibgeCode;
-	
-	private String initial;
-	
 	private String name;
 	
-	/*@OneToMany(mappedBy="state")
+	private String uf;
+	
+	private String pais;
+	
+	@OneToMany(mappedBy="state")
 	@JsonIgnore
-	private List<City> cities = new ArrayList<>();*/
+	private List<City> cities = new ArrayList<>();
 
 	public State() {
 	}
@@ -52,20 +57,28 @@ public class State implements Serializable {
 		this.name = name;
 	}
 
-	public Integer getIbgeCode() {
-		return ibgeCode;
+	public String getUf() {
+		return uf;
 	}
 
-	public void setIbgeCode(Integer ibgeCode) {
-		this.ibgeCode = ibgeCode;
-	}
-	
-	public String getInitial() {
-		return initial;
+	public void setUf(String uf) {
+		this.uf = uf;
 	}
 
-	public void setInitial(String initial) {
-		this.initial = initial;
+	public String getPais() {
+		return pais;
+	}
+
+	public void setPais(String pais) {
+		this.pais = pais;
+	}
+
+	public List<City> getCities() {
+		return cities;
+	}
+
+	public void setCities(List<City> cities) {
+		this.cities = cities;
 	}
 
 	@Override

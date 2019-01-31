@@ -46,6 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	};
 	
 	private final String GET_MATCHERS [] = {
+			"/category/**",
 			"/webjars/**",
             "/*.html",
             "/favicon.ico",
@@ -57,7 +58,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/health",
             "/health/",
             "/h2-console/**",
-            "/state/**"
+            "/state/**",
+            "/city/**"
 	};
 
 	@Bean

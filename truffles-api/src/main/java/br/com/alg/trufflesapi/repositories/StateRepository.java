@@ -9,7 +9,7 @@ import br.com.alg.trufflesapi.model.State;
 
 @Repository
 public interface StateRepository extends JpaRepository<State, Long>{
-
-	public Optional<State> findByInitial(String initial);
 	
+	public Optional<State> findByUf(String uf);
+
 }
