@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -40,12 +41,14 @@ public class Address implements Serializable {
 	@Column(name="tx_postal_code")
 	private String postalCode;
 	
-	@Column(name="tx_city")
-	private String city;
-
-	@Column(name="tx_state")
-	private String state;
+	@OneToOne
+	@JoinColumn(name="id_city")
+	private City city;
 	
+	@OneToOne
+	@JoinColumn(name="id_state")
+	private State state;
+
 	@Column(name="tx_compl")
 	private String complement;
 
@@ -61,6 +64,7 @@ public class Address implements Serializable {
 		this.neighborhood = address.getNeighborhood();
 		this.city = address.getCity();
 		this.state = address.getState();
+		this.city.setState(state);
 		this.complement = address.getComplement();
 		this.postalCode = address.getPostalCode();
 	}
@@ -105,19 +109,19 @@ public class Address implements Serializable {
 		this.neighborhood = neighborhood;
 	}
 
-	public String getCity() {
+	public City getCity() {
 		return city;
 	}
 
-	public void setCity(String city) {
+	public void setCity(City city) {
 		this.city = city;
 	}
 
-	public String getState() {
+	public State getState() {
 		return state;
 	}
 
-	public void setState(String state) {
+	public void setState(State state) {
 		this.state = state;
 	}
 
