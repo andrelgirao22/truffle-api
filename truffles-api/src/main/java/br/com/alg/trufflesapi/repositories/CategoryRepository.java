@@ -17,4 +17,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long>{
 			nativeQuery= false)
 	Page<Category> findByName(@Param("name") String name, Pageable pageable);
 	
+	
+	Page<Category> findById(Long id, Pageable pageable);
+	
 }

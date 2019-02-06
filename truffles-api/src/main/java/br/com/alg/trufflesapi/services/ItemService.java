@@ -115,14 +115,14 @@ public class ItemService {
 		return this.findPrices(item);
 	}
 
-	public List<ItemDTO> findByCategory(Long id) {
+	/*public List<ItemDTO> findByCategory(Long id) {
 		Category category = this.categoryService.find(id);
 		List<ItemDTO> items = this.repository.findByCategory(category)
 				.stream()
 				.filter(item -> item.getStatus().equals(StatusItem.PUBLICADO))
 				.map(i -> new ItemDTO(i)).collect(Collectors.toList());
 		return items;
-	}
+	}*/
 	
 	public URI uploadPicture(MultipartFile file, Long id) {
 		
@@ -157,6 +157,19 @@ public class ItemService {
 		}
 		return this.repository.findAll(pageRequest);
 	}
+	
+	public Page<Item> findByCategory(Long id, Integer page, Integer linesPerPage, String orderby, String direction) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderby);
+		
+		Category category = this.categoryService.find(id);
+		Page<Item> items = this.repository
+				.findByCategory(category, pageRequest);
+								/*.stream()
+				.filter(item -> item.getStatus().equals(StatusItem.PUBLICADO))
+				.map(i -> new ItemDTO(i)).collect(Collectors.toList());*/
+		return items;
+	}
+	
 
 	public void deletePicture(@Valid Long id, Object object) {
 		this.s3Service.deleteFile(prefix + id + ".jpg");

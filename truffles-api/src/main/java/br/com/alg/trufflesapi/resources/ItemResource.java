@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,8 +71,16 @@ public class ItemResource {
 	
 	
 	@GetMapping("/category/{id}")
-	public ResponseEntity<List<ItemDTO>> listByCategory(@Valid @PathVariable("id") Long id) {
-		return ResponseEntity.status(HttpStatus.OK).body(service.findByCategory(id));
+	public ResponseEntity<Page<ItemDTO>> listByCategory(@Valid @PathVariable("id") Long id,
+			@RequestParam(value="page", defaultValue="0") Integer page, 
+			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 
+			@RequestParam(value="orderby", defaultValue="name") String orderby, 
+			@RequestParam(value="direction", defaultValue="ASC") String direction) {
+		Page<Item> itemPage = service.findByCategory(id,page, linesPerPage, orderby, direction);
+		
+		Page<ItemDTO> itemDTOPage = itemPage.map(i -> new ItemDTO(i));
+		
+		return ResponseEntity.status(HttpStatus.OK).body(itemDTOPage);
 	}
 	
 	@PostMapping
