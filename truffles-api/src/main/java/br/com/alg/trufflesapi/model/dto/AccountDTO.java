@@ -1,6 +1,7 @@
 package br.com.alg.trufflesapi.model.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -23,8 +24,9 @@ public class AccountDTO implements Serializable {
 	@Email(message="email inválido")
 	private String email;
 	
-	private Address address;
+	private List<Address> addresses;
 	
+	@JsonIgnore
 	private String password;
 
 	private String register;
@@ -38,10 +40,7 @@ public class AccountDTO implements Serializable {
 		this.name = account.getName();
 		this.email = account.getEmail();
 		this.password = account.getPassword();
-		if(account.getAddresses().size() > 0) {
-			Address address = account.getAddresses().get(0);
-			this.address = address;
-		}
+		this.addresses = account.getAddresses();
 	}
 	
 	public Long getId() {
@@ -81,12 +80,12 @@ public class AccountDTO implements Serializable {
 		return this.register;
 	}
 
-	public Address getAddress() {
-		return address;
+	public List<Address> getAddresses() {
+		return addresses;
 	}
 
-	public void setAddress(Address address) {
-		this.address = address;
+	public void setAddresses(List<Address> addresses) {
+		this.addresses = addresses;
 	}
 
 }

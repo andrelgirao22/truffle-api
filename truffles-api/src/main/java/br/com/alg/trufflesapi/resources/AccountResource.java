@@ -58,10 +58,18 @@ public class AccountResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@GetMapping(value="/{email}")
-	public ResponseEntity<Account> findByEmail(@PathVariable("email") String email) {
+	@GetMapping(value="/email/{email}")
+	public ResponseEntity<AccountDTO> findByEmail(@PathVariable("email") String email) {
 		Optional<Account> account = this.service.findByEmail(email);
-		return ResponseEntity.status(HttpStatus.OK).body(account.get());
+		AccountDTO accountDTO = new AccountDTO(account.get());
+		return ResponseEntity.status(HttpStatus.OK).body(accountDTO);
+	}
+	
+	@GetMapping(value="/{id}")
+	public ResponseEntity<AccountDTO> findById(@PathVariable("id") Long id) {
+		Account account = this.service.find(id);
+		AccountDTO accountDTO = new AccountDTO(account);
+		return ResponseEntity.status(HttpStatus.OK).body(accountDTO);
 	}
 	
 }

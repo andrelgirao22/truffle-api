@@ -183,6 +183,7 @@ public class Account implements Serializable, UserDetails {
 	}
 
 	@Override
+	@JsonIgnore
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.groups;
 	}

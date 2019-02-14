@@ -6,22 +6,16 @@ public class OrderDTO implements Serializable {
 
 	
 	private static final long serialVersionUID = 1L;
-	/*private Account account;
-	private List<Payment> payments;
-	private List<OrderItem> itens;
-	private Order order;
 	
-	public OrderDTO() {
-		
-	}
+	/*private Long id;
 	
-	public OrderDTO(Order order) {
-		this.account = order.getAccount();
-		this.itens = order.getOrderItens();
-		this.payments = order.getPayments();
-	}*/
+	private Double orderValue;
 	
+	private List<OrderItem> orderItens = new ArrayList<>();
 	
+	private List<Payment> payments = new ArrayList<>();
+
+	private Account account;*/
 	
 	
 }

@@ -8,12 +8,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.alg.trufflesapi.exceptions.OrderNotFoundException;
 import br.com.alg.trufflesapi.model.Account;
+import br.com.alg.trufflesapi.model.Item;
 import br.com.alg.trufflesapi.model.Order;
 import br.com.alg.trufflesapi.model.OrderItem;
+import br.com.alg.trufflesapi.model.OrderStatusType;
 import br.com.alg.trufflesapi.model.Payment;
+import br.com.alg.trufflesapi.model.Price;
+import br.com.alg.trufflesapi.model.PriceType;
 import br.com.alg.trufflesapi.repositories.OrderItemRepository;
 import br.com.alg.trufflesapi.repositories.OrderRepository;
 import br.com.alg.trufflesapi.repositories.PaymentRepository;
@@ -32,14 +37,15 @@ public class OrderService {
 	
 	@Autowired
 	private AccountService accountService;
-	/*
+	
 	@Autowired
-	private ItemService itemService;*/
+	private ItemService itemService;
 
 	public List<Order> listAll() {
 		return orderRepository.findAll();
 	}
 
+	@Transactional
 	public Order save(Order order) {
 		
 		List<Payment> payments = order.getPayments();
@@ -47,31 +53,28 @@ public class OrderService {
 		
 		order.setId(null);
 		order.setDate(new Date());
+		order.setStatus(OrderStatusType.PENDENTE);
 		
 		Account account = this.accountService.find(order.getAccount().getId());
 		order.setAccount(account);
 		
 		for(Payment payment: payments) {
 			payment.setOrder(order);
-			payment.setDataPayment(new Date());			
+			payment.setDataPayment(new Date());	
 		}
 		
 		for(OrderItem item: orderItens) {
 			item.setDate(new Date());
 			item.setOrder(order);
+			Item i = this.itemService.find(item.getItem().getId());
+			item.setQuantity(item.getQuantity());
+			Price price = i.getPrices().stream().filter(p -> p.getTypePrice().equals(PriceType.NORMAL)).findFirst().get();
+			item.setValue(price.getPrice() * item.getQuantity());
 		}
 		
 		order = orderRepository.save(order);
 		this.orderItemRepository.saveAll(orderItens);
 		this.paymentRepository.saveAll(payments);
-		
-		/*orderItens.forEach(orderItem ->  {			
-			this.save(orderItem, newOrder.getId());
-		});
-		
-		payments.forEach(payment -> {
-			this.save(payment, newOrder.getId());
-		});*/
 		
 		return order;
 	}

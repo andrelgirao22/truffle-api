@@ -85,7 +85,7 @@ public class AccountService {
 				new Account(null, accountDTO.getName(), accountDTO.getEmail(), accountDTO.getPassword(), accountDTO.getRegister());
 		
 		Address address = 
-				new Address(null, account, accountDTO.getAddress());
+				new Address(null, account, accountDTO.getAddresses().get(0));
 		
 		address.setAccount(account);
 		account.getAddresses().add(address);
