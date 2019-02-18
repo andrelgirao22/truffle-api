@@ -28,6 +28,8 @@ public class AccountDTO implements Serializable {
 	
 	@JsonIgnore
 	private String password;
+	
+	private String imageUrl;
 
 	private String register;
 
@@ -40,6 +42,7 @@ public class AccountDTO implements Serializable {
 		this.name = account.getName();
 		this.email = account.getEmail();
 		this.password = account.getPassword();
+		this.imageUrl = account.getImageUrl();
 		this.addresses = account.getAddresses();
 	}
 	
@@ -78,6 +81,14 @@ public class AccountDTO implements Serializable {
 
 	public String getRegister() {
 		return this.register;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	public List<Address> getAddresses() {
