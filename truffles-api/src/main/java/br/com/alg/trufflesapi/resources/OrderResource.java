@@ -46,6 +46,18 @@ public class OrderResource {
 		return ResponseEntity.status(HttpStatus.OK).body(service.listAll());
 	}
 	
+	@GetMapping(value="/account/{email}")
+	public ResponseEntity<Page<Order>> findPageByAccount(
+			@RequestParam(value="page", defaultValue="0") Integer page, 
+			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 
+			@RequestParam(value="orderby", defaultValue="id") String orderby, 
+			@RequestParam(value="direction", defaultValue="DESC") String direction,
+			@PathVariable(value = "email") String email) {
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(service.findByAccount(page, linesPerPage, orderby, direction, email));
+	}
+	
 	@GetMapping(value="/page")
 	public ResponseEntity<Page<Order>> findPageByName(
 			@RequestParam(value="page", defaultValue="0") Integer page, 

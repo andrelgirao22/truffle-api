@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.alg.trufflesapi.exceptions.AccountNotFoundException;
 import br.com.alg.trufflesapi.exceptions.OrderNotFoundException;
 import br.com.alg.trufflesapi.model.Account;
 import br.com.alg.trufflesapi.model.Item;
@@ -129,16 +130,6 @@ public class OrderService {
 		return orderRepository.findById(id).orElseThrow(new OrderNotFoundException("Pedido não encontrado"));
 	}
 	
-	/*private void checkPayment(Payment payment, Order order) {
-		
-		Double totalPayment = getTotalPaymentOrder(order);
-		Double totalOrder = order.getOrderValue();
-		Double value = payment.getValue();
-		if(value > (totalOrder - totalPayment)) {
-			throw new PaymentInvalidException("Valor Pagamento superior ao valor do pedido");
-		}
-	}*/
-	
 	public List<OrderItem> findItensByOrder(Order order) {
 		return this.orderItemRepository.findByOrder(order);
 	}
@@ -150,5 +141,11 @@ public class OrderService {
 	public Page<Order> findPageByName(Integer page, Integer linesPerPage, String orderby, String direction, String name) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderby);
 		return this.orderRepository.findAll(pageRequest);
+	}
+	
+	public Page<Order> findByAccount(Integer page, Integer linesPerPage, String orderby, String direction, String email) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderby);
+		Account account = this.accountService.findByEmail(email).orElseThrow(new AccountNotFoundException("Conta não encontrada"));
+		return this.orderRepository.findByAccount(account, pageRequest);
 	}
 }
