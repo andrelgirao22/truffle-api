@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import br.com.alg.trufflesapi.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,19 +15,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
-
-import br.com.alg.trufflesapi.exceptions.AccountEmailExistException;
-import br.com.alg.trufflesapi.exceptions.AccountNotFoundException;
-import br.com.alg.trufflesapi.exceptions.CategoryNotFoundException;
-import br.com.alg.trufflesapi.exceptions.CityNotFoundException;
-import br.com.alg.trufflesapi.exceptions.CredentiaisInvalidException;
-import br.com.alg.trufflesapi.exceptions.Erro;
-import br.com.alg.trufflesapi.exceptions.FileException;
-import br.com.alg.trufflesapi.exceptions.ItemNotFoundException;
-import br.com.alg.trufflesapi.exceptions.OrderNotFoundException;
-import br.com.alg.trufflesapi.exceptions.PaymentInvalidException;
-import br.com.alg.trufflesapi.exceptions.PriceNotFoudException;
-import br.com.alg.trufflesapi.exceptions.UserException;
 
 @ControllerAdvice
 public class ResourceHandleException {
@@ -159,5 +147,15 @@ public class ResourceHandleException {
 		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
 	}
+
+	@ExceptionHandler(TaxDeliveryNotFoundException.class)
+	public ResponseEntity<Erro> taxDelivery(TaxDeliveryNotFoundException e,
+										 HttpServletRequest request) {
+		Erro erro = new Erro();
+		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+	}
+
+
 	
 }
