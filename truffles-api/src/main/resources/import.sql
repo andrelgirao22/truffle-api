@@ -20,3 +20,6 @@
 
 --INSERT INTO `truffleapp`.`tb_account` (`tx_city`, `tx_state`, `bl_status`, `tx_email`, `tx_password`, `tx_name`) 
 --VALUE ('Fortaleza','user@truffles.com.br'	'{bcrypt}$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra')
+
+
+insert into truffleapp.tb_item values(99999, '2019-09-02 21:00:00', 'FRETE',null,'Frente', 'PENDENTE', null, null);

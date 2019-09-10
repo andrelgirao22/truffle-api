@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>br.com.alg</groupId>
-	<artifactId>truffles-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>truffle-api</artifactId>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>truffles-api</name>

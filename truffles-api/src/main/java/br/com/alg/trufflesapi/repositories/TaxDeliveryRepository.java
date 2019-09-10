@@ -16,4 +16,6 @@ public interface TaxDeliveryRepository extends JpaRepository<TaxDelivery, Long> 
 
     @Query(nativeQuery = true, value = "SELECT a.* FROM tb_tax_delivery a WHERE ?1 BETWEEN a.vl_distance AND a.vl_max_distance;")
     Optional<List<TaxDelivery>> findByDistanceGreaterThanAndMaxDistanceLessThanEqual(Double distance);
+
+    Optional<TaxDelivery> findByValue(Double value);
 }

@@ -1,12 +1,14 @@
 package br.com.alg.trufflesapi.services;
 
 import br.com.alg.trufflesapi.exceptions.TaxDeliveryNotFoundException;
+import br.com.alg.trufflesapi.model.Price;
 import br.com.alg.trufflesapi.model.TaxDelivery;
 import br.com.alg.trufflesapi.repositories.TaxDeliveryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaxDeliveryService {
@@ -41,8 +43,11 @@ public class TaxDeliveryService {
 		return repository.findByDistanceBetween(minDistance, maxDistance).orElseThrow(new TaxDeliveryNotFoundException("Valor não encontrado"));
 	}
 
-
 	public List<TaxDelivery> findByDistance(Double distance) {
 		return repository.findByDistanceGreaterThanAndMaxDistanceLessThanEqual(distance).orElseThrow(new TaxDeliveryNotFoundException("Valor não encontrado"));
 	}
+
+    public Optional<TaxDelivery> findByValue(Double value) {
+		return this.repository.findByValue(value);
+    }
 }

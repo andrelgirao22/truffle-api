@@ -42,6 +42,9 @@ public class OrderService {
 	@Autowired
 	private ItemService itemService;
 
+	@Autowired
+	private TaxDeliveryService taxDeliveryService;
+
 	public List<Order> listAll() {
 		return orderRepository.findAll();
 	}
@@ -69,7 +72,17 @@ public class OrderService {
 			item.setOrder(order);
 			Item i = this.itemService.find(item.getItem().getId());
 			item.setQuantity(item.getQuantity());
-			Price price = i.getPrices().stream().filter(p -> p.getTypePrice().equals(PriceType.NORMAL)).findFirst().get();
+			Price price = null;
+
+			if(i.getId().equals(99999L)) {
+				Price priceModel = new Price();
+				priceModel.setTypePrice(PriceType.FRETE);
+				priceModel.setPrice(item.getValue());
+				price = priceModel;
+			} else {
+				price = i.getPrices().stream().filter(p -> p.getTypePrice().equals(PriceType.NORMAL)).findFirst().get();
+			}
+
 			item.setValue(price.getPrice() * item.getQuantity());
 		}
 		
@@ -79,7 +92,7 @@ public class OrderService {
 		
 		return order;
 	}
-	
+
 	public OrderItem save(OrderItem orderItem, Long id) {
 		Order order =  find(id);
 		orderItem.setOrder(order);

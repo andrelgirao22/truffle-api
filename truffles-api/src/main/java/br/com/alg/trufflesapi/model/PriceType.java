@@ -2,7 +2,7 @@ package br.com.alg.trufflesapi.model;
 
 public enum PriceType {
 
-	NORMAL("Normal"), PROMOCIONAL("Promocional");
+	NORMAL("Normal"), PROMOCIONAL("Promocional"), FRETE("Frete");
 	
 	private String description;
 	
