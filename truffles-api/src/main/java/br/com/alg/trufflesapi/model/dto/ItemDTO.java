@@ -2,8 +2,10 @@ package br.com.alg.trufflesapi.model.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
+import br.com.alg.trufflesapi.model.Category;
 import br.com.alg.trufflesapi.model.Item;
 import br.com.alg.trufflesapi.model.Price;
 import br.com.alg.trufflesapi.model.PriceType;
@@ -18,6 +20,8 @@ public class ItemDTO implements Serializable {
 	private String imageUrl; 
 	private Date date;
 	private Double price;
+	private Category category;
+	private List<Price> prices;
 	
 	public ItemDTO() {
 	}
@@ -29,8 +33,10 @@ public class ItemDTO implements Serializable {
 		this.description = item.getDescription();
 		this.imageUrl = item.getImageUrl();
 		this.date = item.getDate();
+		this.prices = item.getPrices();
 		Price p = item.getPrices().get(0);; 
 		this.price = p.getPrice();
+		this.category = item.getCategory();
 	}
 	
 	public ItemDTO(Item item, PriceType priceType) {
@@ -96,5 +102,14 @@ public class ItemDTO implements Serializable {
 
 	public void setPrice(Double price) {
 		this.price = price;
-	}	
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public ItemDTO setCategory(Category category) {
+		this.category = category;
+		return this;
+	}
 }

@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
 import br.com.alg.trufflesapi.exceptions.*;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -154,6 +155,13 @@ public class ResourceHandleException {
 		Erro erro = new Erro();
 		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+	}
+
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<Erro> dataIntegrity(DataIntegrityViolationException e, HttpServletRequest request) {
+		Erro erro = new Erro();
+		erro.setMessage(e.getMessage()).setStatus(HttpStatus.NOT_ACCEPTABLE.value()).setTimestamp(new Date().getTime());
+		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(erro);
 	}
 
 
