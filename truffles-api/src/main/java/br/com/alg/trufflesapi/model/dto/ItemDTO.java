@@ -112,4 +112,13 @@ public class ItemDTO implements Serializable {
 		this.category = category;
 		return this;
 	}
+
+	public List<Price> getPrices() {
+		return prices;
+	}
+
+	public ItemDTO setPrices(List<Price> prices) {
+		this.prices = prices;
+		return this;
+	}
 }

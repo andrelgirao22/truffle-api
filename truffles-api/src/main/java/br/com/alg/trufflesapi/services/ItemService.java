@@ -1,16 +1,18 @@
 package br.com.alg.trufflesapi.services;
 
 import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import com.dropbox.core.v2.files.DbxUserFilesRequests;
+import com.dropbox.core.v2.files.FileMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -46,7 +48,7 @@ public class ItemService {
 	private ImageService imageService;
 	
 	@Autowired
-	private AmazonS3Service s3Service;
+	private DropboxSdkService dbService;
 	
 	@Value("${img.prefix.item}")
 	private String prefix;
@@ -134,14 +136,15 @@ public class ItemService {
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(file);
 		jpgImage = imageService.cropSquare(jpgImage);
 		jpgImage = imageService.resize(jpgImage, size);
-		String filename = prefix + item.getId() + ".jpg";
+		//String filename = prefix + item.getId() + ".jpg";
+		String filename = prefix + "-" + item.getId() + "-" + file.getOriginalFilename();
 		
 		InputStream is = this.imageService.getInputStream(jpgImage, "jpg");
 		
-		URI uri = this.s3Service.uploadFile(is, filename, "image");
+		URI uri = this.dbService.uploadFile(is, filename, "image");
 		
-		item.setImageUrl(uri.toString());
-		this.repository.save(item);
+		//item.setImageUrl(uri.toString());
+		//this.repository.save(item);
 		
 		return uri;
 	}
@@ -172,7 +175,17 @@ public class ItemService {
 	
 
 	public void deletePicture(@Valid Long id, Object object) {
-		this.s3Service.deleteFile(prefix + id + ".jpg");
+		this.dbService.deleteFile(this.dbService.getDropClient(),prefix + id + ".jpg");
 	}
-	
+
+	public InputStream getImageFromId(Long id, Integer index) {
+
+		String filename = prefix + "-" + id + "-" + index + ".png";
+		DbxUserFilesRequests file = this.dbService.getFile(this.dbService.getDropClient(), filename);
+		try {
+			return  file.download("/" + filename).getInputStream();
+		} catch (Exception e) {
+			throw  new RuntimeException("Arquivo " + filename + " não encontrado");
+		}
+	}
 }
