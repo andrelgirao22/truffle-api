@@ -159,11 +159,11 @@ public class ItemResource {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@DeleteMapping(value="/picture/{id}")
+	@DeleteMapping(value="/picture/{id}/index/{index}")
 	@PreAuthorize("hasAnyRole('DEV', 'ADMIN')")
-	public ResponseEntity<Void> deletePicture(@Valid @PathVariable(name="id", required= true) Long id) {
+	public ResponseEntity<Void> deletePicture(@Valid @PathVariable(name="id", required= true) Long id, @PathVariable(name = "index", required = true) Integer index) {
 		
-		service.deletePicture(id, null);;
+		service.deletePicture(id, index);;
 		return ResponseEntity.noContent().build();
 	}
 }

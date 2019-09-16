@@ -172,10 +172,9 @@ public class ItemService {
 				.map(i -> new ItemDTO(i)).collect(Collectors.toList());*/
 		return items;
 	}
-	
 
-	public void deletePicture(@Valid Long id, Object object) {
-		this.dbService.deleteFile(this.dbService.getDropClient(),prefix + id + ".jpg");
+	public void deletePicture(@Valid Long id, Integer index) {
+		this.dbService.deleteFile(this.dbService.getDropClient(),prefix + "-" + id + "-" + index +  ".png");
 	}
 
 	public InputStream getImageFromId(Long id, Integer index) {
