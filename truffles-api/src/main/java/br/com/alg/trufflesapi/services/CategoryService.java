@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dropbox.core.v2.files.DbxUserFilesRequests;
+
 import br.com.alg.trufflesapi.exceptions.CategoryNotFoundException;
 import br.com.alg.trufflesapi.model.Category;
 import br.com.alg.trufflesapi.repositories.CategoryRepository;
@@ -25,7 +27,7 @@ public class CategoryService {
 	private CategoryRepository repository;
 	
 	@Autowired
-	private AmazonS3Service s3Service;
+	private DropboxSdkService dbService;
 	
 	@Value("${img.prefix.category}")
 	private String prefix;
@@ -62,9 +64,6 @@ public class CategoryService {
 	}
 
 	public void delete(Long id) {
-		
-		//removeOldImage(id + "");
-		
 		find(id);
 		repository.deleteById(id);
 	}
@@ -75,89 +74,39 @@ public class CategoryService {
 	}
 
 	
-	/*public Map<String, String> getImage(String image) {
-		
-		try {
-			
-			Path path = Paths.get("imagens/category/" + image);
-			
-			File file = path.toFile();
-			
-			String encodeImage = Base64.getEncoder().withoutPadding().encodeToString(Files.readAllBytes(file.toPath()));
-			
-			Map<String, String> jsonMap = new HashMap<>();
-			jsonMap.put("image", encodeImage);
-			
-			return jsonMap;
-			
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return null;
-		}
-	}
-
-	public void saveImage(String id, @Valid MultipartFile file) {
-		
-		try {
-			
-			removeOldImage(id);
-			
-			Path path = Paths.get("imagens/category/" + file.getOriginalFilename());
-			path.toFile().setExecutable(true, false);
-			
-			FileOutputStream out = new FileOutputStream(path.toFile());
-			out.write(file.getBytes());
-			out.close();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void removeOldImage(String image) {
-		
-		if(image == null) return ;
-
-		try {
-			Category category = find(Long.valueOf(image));
-			
-			Path path = Paths.get("imagens/category" + category.getImage());
-			Files.delete(path);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		
-	}*/
-	
-	public URI uploadPicture(MultipartFile multipartFile, Long id) {
-		
-		/*Account account = AccountService.authenticated();
-		if(account == null) {
-			throw new AuthorizationException("Acesso negado");
-		}*/
+	public URI uploadPicture(MultipartFile file, Long id) {
 		
 		Category category = this.find(id);
 		if(category == null) {
 			throw new CategoryNotFoundException("Objeto não encontrado " + id);
 		}
-		
-		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+		BufferedImage jpgImage = imageService.getJpgImageFromFile(file);
 		jpgImage = imageService.cropSquare(jpgImage);
 		jpgImage = imageService.resize(jpgImage, size);
-		String filename = prefix + category.getId() + ".jpg";
+		String filename = prefix + "-" + category.getId() + "-" + file.getOriginalFilename();
 		
 		InputStream is = this.imageService.getInputStream(jpgImage, "jpg");
 		
-		URI uri = this.s3Service.uploadFile(is, filename, "image");
+		URI uri = this.dbService.uploadFile(is, filename, "image");
 		
-		category.setImageUrl(uri.toString());
-		this.repository.save(category);
 		
 		return uri;
 	}
 	
-	public void deletePicture(Long id, String filename) {
-		this.s3Service.deleteFile(prefix + id + ".jpg");
+
+	public InputStream getImageFromId(Long id, Integer index) {
+
+		String filename = prefix + "-" + id + "-" + index + ".png";
+		DbxUserFilesRequests file = this.dbService.getFile(this.dbService.getDropClient(), filename);
+		try {
+			return  file.download("/" + filename).getInputStream();
+		} catch (Exception e) {
+			throw  new RuntimeException("Arquivo " + filename + " não encontrado");
+		}
+	}
+	
+	public void deletePicture(Long id, Integer index) {
+		this.dbService.deleteFile(this.dbService.getDropClient(),prefix + "-" + id + "-" + index +  ".png");
 	}
 	
 	

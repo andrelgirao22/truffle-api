@@ -6,18 +6,26 @@ import java.net.URI;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -111,21 +119,6 @@ public class ItemResource {
 		return IOUtils.toByteArray(in);
 	}
 
-	/*
-	public ResponseEntity<byte[]> getImageAsResponseEntity(
-			@PathVariable(name="id", required= true) Long id,
-			@PathVariable(name = "index", required = true)Integer index,
-			HttpServletResponse response) {
-		try {
-			InputStream in = service.getImageFromId(id, index);
-			IOUtils.copy(in, response.getOutputStream());
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		return  null;
-	}
-	*/
 	@PostMapping(value="/{id}/price")
 	@PreAuthorize("hasAnyRole('DEV', 'ADMIN')")
 	public ResponseEntity<Void> saveItemPrice(@Valid @RequestBody Price price, @PathVariable("id") Long id) {

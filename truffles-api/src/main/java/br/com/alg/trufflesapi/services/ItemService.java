@@ -1,7 +1,6 @@
 package br.com.alg.trufflesapi.services;
 
 import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Arrays;
@@ -11,8 +10,6 @@ import java.util.List;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-import com.dropbox.core.v2.files.DbxUserFilesRequests;
-import com.dropbox.core.v2.files.FileMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -20,6 +17,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.dropbox.core.v2.files.DbxUserFilesRequests;
 
 import br.com.alg.trufflesapi.exceptions.ItemNotFoundException;
 import br.com.alg.trufflesapi.exceptions.PriceNotFoudException;
@@ -117,15 +116,6 @@ public class ItemService {
 		return this.findPrices(item);
 	}
 
-	/*public List<ItemDTO> findByCategory(Long id) {
-		Category category = this.categoryService.find(id);
-		List<ItemDTO> items = this.repository.findByCategory(category)
-				.stream()
-				.filter(item -> item.getStatus().equals(StatusItem.PUBLICADO))
-				.map(i -> new ItemDTO(i)).collect(Collectors.toList());
-		return items;
-	}*/
-	
 	public URI uploadPicture(MultipartFile file, Long id) {
 		
 		Item item = this.find(id);
@@ -136,15 +126,11 @@ public class ItemService {
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(file);
 		jpgImage = imageService.cropSquare(jpgImage);
 		jpgImage = imageService.resize(jpgImage, size);
-		//String filename = prefix + item.getId() + ".jpg";
 		String filename = prefix + "-" + item.getId() + "-" + file.getOriginalFilename();
 		
 		InputStream is = this.imageService.getInputStream(jpgImage, "jpg");
 		
 		URI uri = this.dbService.uploadFile(is, filename, "image");
-		
-		//item.setImageUrl(uri.toString());
-		//this.repository.save(item);
 		
 		return uri;
 	}
