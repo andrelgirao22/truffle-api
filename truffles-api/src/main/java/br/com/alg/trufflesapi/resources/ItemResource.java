@@ -111,7 +111,6 @@ public class ItemResource {
 	}
 
 	@GetMapping(value = "/picture/{id}/index/{index}")
-	@PreAuthorize("hasAnyRole('DEV', 'ADMIN')")
 	public @ResponseBody byte[] getImage(
 			@PathVariable(name="id", required= true) Long id,
 			@PathVariable(name = "index", required = true)Integer index) throws IOException {
