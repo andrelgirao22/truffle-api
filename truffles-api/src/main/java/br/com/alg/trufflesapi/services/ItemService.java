@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.dropbox.core.v2.files.DbxUserFilesRequests;
 
+import br.com.alg.trufflesapi.exceptions.ImageNotFoundException;
 import br.com.alg.trufflesapi.exceptions.ItemNotFoundException;
 import br.com.alg.trufflesapi.exceptions.PriceNotFoudException;
 import br.com.alg.trufflesapi.model.Category;
@@ -170,7 +171,7 @@ public class ItemService {
 		try {
 			return  file.download("/" + filename).getInputStream();
 		} catch (Exception e) {
-			throw  new RuntimeException("Arquivo " + filename + " não encontrado");
+			throw new ImageNotFoundException("Arquivo " + filename + " não encontrado");
 		}
 	}
 }

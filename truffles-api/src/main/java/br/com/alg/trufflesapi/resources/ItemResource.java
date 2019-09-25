@@ -111,11 +111,12 @@ public class ItemResource {
 	}
 
 	@GetMapping(value = "/picture/{id}/index/{index}")
-	public @ResponseBody byte[] getImage(
+	public ResponseEntity<byte[]> getImage(
 			@PathVariable(name="id", required= true) Long id,
 			@PathVariable(name = "index", required = true)Integer index) throws IOException {
 		InputStream in = this.service.getImageFromId(id, index);
-		return IOUtils.toByteArray(in);
+		CacheControl cacheControl = CacheControl.maxAge(120, TimeUnit.SECONDS);
+		return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(IOUtils.toByteArray(in));
 	}
 
 	@PostMapping(value="/{id}/price")

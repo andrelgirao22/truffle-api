@@ -156,6 +156,14 @@ public class ResourceHandleException {
 		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
 	}
+	
+	@ExceptionHandler(ImageNotFoundException.class)
+	public ResponseEntity<Erro> imageNotFound(ImageNotFoundException e,
+										 HttpServletRequest request) {
+		Erro erro = new Erro();
+		erro.setMessage(e.getMessage()).setStatus(HttpStatus.BAD_REQUEST.value()).setTimestamp(new Date().getTime());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+	}
 
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<Erro> dataIntegrity(DataIntegrityViolationException e, HttpServletRequest request) {
