@@ -23,3 +23,6 @@
 
 
 insert into truffleapp.tb_item values(99999, '2019-09-02 21:00:00', 'FRETE',null,'Frente', 'PENDENTE', null, null);
+
+insert into truffleapp.tb_tax_delivery (vl_distance, vl_tax_delivery, vl_max_distance)values(20, 11, 29);
+insert into truffleapp.tb_tax_delivery (vl_distance, vl_tax_delivery, vl_max_distance)values(10, 7, 19);
