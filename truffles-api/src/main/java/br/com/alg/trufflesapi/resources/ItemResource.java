@@ -95,6 +95,7 @@ public class ItemResource {
 		item.getPrices().forEach(price -> {			
 			service.saveItemPrice(price, id);
 		});
+		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(item.getId()).toUri();
 		return ResponseEntity.created(uri).build();

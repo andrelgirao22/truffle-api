@@ -111,6 +111,7 @@ public class CategoryResource {
 		InputStream in = this.service.getImageFromId(id, index);
 		
 		CacheControl cacheControl = CacheControl.maxAge(120, TimeUnit.SECONDS);
+		
 		return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(IOUtils.toByteArray(in));
 	}
 	
