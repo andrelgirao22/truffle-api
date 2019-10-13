@@ -26,7 +26,6 @@ public class AccountDTO implements Serializable {
 	
 	private List<Address> addresses;
 	
-	@JsonIgnore
 	private String password;
 	
 	private String imageUrl;
