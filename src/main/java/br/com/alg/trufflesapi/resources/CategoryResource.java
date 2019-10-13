@@ -110,7 +110,7 @@ public class CategoryResource {
 			@PathVariable(name = "index", required = true)Integer index) throws IOException {
 		InputStream in = this.service.getImageFromId(id, index);
 		
-		CacheControl cacheControl = CacheControl.maxAge(120, TimeUnit.SECONDS);
+		CacheControl cacheControl = CacheControl.maxAge(3600, TimeUnit.SECONDS);
 		
 		return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(IOUtils.toByteArray(in));
 	}
