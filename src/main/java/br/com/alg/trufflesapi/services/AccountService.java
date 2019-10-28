@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import br.com.alg.trufflesapi.services.business.ClientBoughtMost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -172,4 +173,8 @@ public class AccountService {
 		
 		return uri;
 	}
+
+    public List<ClientBoughtMost> findClientsBoughtMost(Date dtInit, Date dtFinal) {
+		return this.repository.findClientsBoughtMost(dtInit,dtFinal);
+    }
 }

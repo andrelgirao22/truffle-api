@@ -42,7 +42,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private final String POST_MATCHERS [] = {
 			"/auth/**",
 			"/forgot_password/**",
-			"/account/**"
+			"/account/**",
+			"/report/**"
 	};
 	
 	private final String GET_MATCHERS [] = {
