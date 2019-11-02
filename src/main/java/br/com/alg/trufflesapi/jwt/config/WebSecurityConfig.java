@@ -62,7 +62,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/health/",
             "/h2-console/**",
             "/state/**",
-            "/city/**"
+            "/city/**",
+			"/report/**"
 	};
 
 	@Bean

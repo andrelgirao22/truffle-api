@@ -36,12 +36,15 @@ public class ClientesDataProvider implements  DataProvider {
 
         Map<String, Object> report = new HashMap<>();
 
-        report.put("wtitle","Clientes que mais compraram");
+        report.put("wtitle","CLIENTES QUE COMPRAM MAIS");
         report.put("wsubtitle","");
         report.put("wpagheader","Período " + queryParams.get("dt_ini") + " à " + queryParams.get("dt_final"));
         report.put("wimage","");
         report.put( "wcolheader","CODIGO  EMAIL                                  VALOR");
         List<Detail> details= new ArrayList<>();
+        if(list.isEmpty()) {
+            details.add(new Detail().setLine("Nenhum resultado"));
+        }
         list.forEach( c -> {
             String content = padRight(c.getId().toString(), 8)  + padRight(c.getEmail(),40) + formatNumber(c.getValue(), "#,##0.00");
             details.add(new Detail().setLine(content));

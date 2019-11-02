@@ -4,16 +4,15 @@ package br.com.alg.trufflesapi.resources;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
 
 import br.com.alg.trufflesapi.model.ReportType;
 import br.com.alg.trufflesapi.services.ReportService;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +29,7 @@ public class ReportResource {
     @Autowired
     private ReportService service;
 
-    @PostMapping
+    @GetMapping
     public HttpEntity<byte[]> getReport(
             @RequestParam(value="type", defaultValue="portrait") String type,
             @RequestParam(value="template", defaultValue="generic") String template,
@@ -45,8 +44,12 @@ public class ReportResource {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(MediaType.APPLICATION_PDF);
         header.setContentLength(documentBody.length);
-        header.setContentDispositionFormData("attachment", "teste.pdf");
-        return new HttpEntity<byte[]>(documentBody, header);
+        String filename = reportName + ".pdf";
+        header.setContentDispositionFormData(filename, filename);
+        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(documentBody, header, HttpStatus.OK);
+        CacheControl cacheControl = CacheControl.maxAge(3600, TimeUnit.SECONDS);
+        return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(documentBody);
+        //return response; //new HttpEntity<byte[]>(documentBody, header);
     }
 
     @PostMapping(value="/upload")

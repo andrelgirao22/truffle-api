@@ -2,32 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a843aab4-a267-4e8a-886e-e9e0f195e41d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/model/Detail.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/model/Report.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/model/ReportType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/resources/ReportResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/ReportService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/business/ClientBoughtMost.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/business/ClientesDataProvider.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/business/DataProvider.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/business/DataProviderBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/util/CommonFunctions.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/landscape/generic.jasper" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/portrait/generic.jasper" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/portrait/generic_recibo.jasper" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/.classpath" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/$PRODUCT_WORKSPACE_FILE$" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" afterPath="$PROJECT_DIR$/.settings/org.eclipse.jdt.core.prefs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/jwt/config/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/jwt/config/WebSecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/model/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/model/Account.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/repositories/AccountRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/repositories/AccountRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/AccountService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/resources/ReportResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/resources/ReportResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/business/ClientesDataProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/business/ClientesDataProvider.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -51,6 +32,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
@@ -105,6 +87,14 @@
       <option name="presentableId" value="Default" />
       <updated>1571691121998</updated>
     </task>
+    <task id="LOCAL-00001" summary="criado endpoint para devolver relatorios.">
+      <created>1572299671675</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1572299671675</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -122,6 +112,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="criado endpoint para devolver relatorios." />
+    <option name="LAST_COMMIT_MESSAGE" value="criado endpoint para devolver relatorios." />
   </component>
   <component name="simpleUML.UMLToolWindowPlugin">
     <General>

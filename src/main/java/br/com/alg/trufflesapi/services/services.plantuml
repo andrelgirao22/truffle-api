@@ -1,0 +1,238 @@
+@startuml
+
+title __SERVICES's Class Diagram__\n
+
+  namespace br.com.alg.trufflesapi {
+    namespace services {
+      class br.com.alg.trufflesapi.services.AccountService {
+          - prefix : String
+          - size : Integer
+          {static} + authenticated()
+          + delete()
+          + find()
+          + findByEmail()
+          + fromDto()
+          + generateNewPassword()
+          + listAll()
+          + save()
+          + saveAll()
+          + update()
+          + uploadPicture()
+          - checkExist()
+          - random()
+      }
+    }
+  }
+  
+
+  namespace br.com.alg.trufflesapi {
+    namespace services {
+      class br.com.alg.trufflesapi.services.AmazonS3Service {
+          - LOG : Logger
+          - bucketName : String
+          - s3Client : AmazonS3
+          + deleteFile()
+          + uploadFile()
+          + uploadFile()
+      }
+    }
+  }
+  
+
+  namespace br.com.alg.trufflesapi {
+    namespace services {
+      class br.com.alg.trufflesapi.services.CategoryService {
+          - prefix : String
+          - size : Integer
+          + delete()
+          + deletePicture()
+          + find()
+          + findPage()
+          + findPageByName()
+          + getImageFromId()
+          + listAll()
+          + save()
+          + update()
+          + uploadPicture()
+      }
+    }
+  }
+  
+
+  namespace br.com.alg.trufflesapi {
+    namespace services {
+      class br.com.alg.trufflesapi.services.DBService {
+          + instantiateDatabase()
+      }
+    }
+  }
+  
+
+  namespace br.com.alg.trufflesapi {
+    namespace services {
+      class br.com.alg.trufflesapi.services.DeliveryService {
+          + delete()
+          + find()
+          + findDeliveryByOrder()
+          + listAll()
+          + save()
+          + update()
+      }
+    }
+  }
+  
+
+  namespace br.com.alg.trufflesapi {
+    namespace services {
+      class br.com.alg.trufflesapi.services.DropboxSdkService {
+          - LOG : Logger
+          - accessToken : String
+          + deleteFile()
+          + getDropClient()
+          + getFile()
+          + uploadFile()
+          + uploadFile()
+      }
+    }
+  }
+  
+
+  namespace br.com.alg.trufflesapi {
+    namespace services {
+      class br.com.alg.trufflesapi.services.GroupService {
+          + delete()
+          + find()
+          + findById()
+          + findByIdOrName()
+          + findByName()
+          + listAll()
+          + save()
+          + saveAll()
+          + update()
+      }
+    }
+  }
+  
+
+  namespace br.com.alg.trufflesapi {
+    namespace services {
+      class br.com.alg.trufflesapi.services.ImageService {
+          + cropSquare()
+          + getInputStream()
+          + getJpgImageFromFile()
+          + resize()
+          - pngToJpg()
+      }
+    }
+  }
+  
+
+  namespace br.com.alg.trufflesapi {
+    namespace services {
+      class br.com.alg.trufflesapi.services.ItemService {
+          - prefix : String
+          - size : Integer
+          + delete()
+          + deletePicture()
+          + find()
+          + findByCategory()
+          + findItemDto()
+          + findPage()
+          + findPriceByItem()
+          + findPrices()
+          + getImageFromId()
+          + listAll()
+          + listPriceType()
+          + save()
+          + saveItemPrice()
+          + update()
+          + uploadPicture()
+      }
+    }
+  }
+  
+
+  namespace br.com.alg.trufflesapi {
+    namespace services {
+      class br.com.alg.trufflesapi.services.OrderService {
+          + delete()
+          + find()
+          + findByAccount()
+          + findItensByOrder()
+          + findPageByName()
+          + findPaymentByOrder()
+          + getTotalOrder()
+          + getTotalPaymentOrder()
+          + listAll()
+          + save()
+          + save()
+          + save()
+          + update()
+      }
+    }
+  }
+  
+
+  namespace br.com.alg.trufflesapi {
+    namespace services {
+      class br.com.alg.trufflesapi.services.StateService {
+          + findByUf()
+          + findCitiesByUf()
+          + listAll()
+      }
+    }
+  }
+  
+
+  namespace br.com.alg.trufflesapi {
+    namespace services {
+      class br.com.alg.trufflesapi.services.TaxDeliveryService {
+          + delete()
+          + find()
+          + findByDistance()
+          + findByDistance()
+          + findByValue()
+          + listAll()
+          + save()
+          + update()
+      }
+    }
+  }
+  
+
+  br.com.alg.trufflesapi.services.AccountService o-- br.com.alg.trufflesapi.repositories.AddressRepository : addressRepository
+  br.com.alg.trufflesapi.services.AccountService o-- br.com.alg.trufflesapi.services.GroupService : groupService
+  br.com.alg.trufflesapi.services.AccountService o-- br.com.alg.trufflesapi.services.ImageService : imageService
+  br.com.alg.trufflesapi.services.AccountService o-- br.com.alg.trufflesapi.repositories.AccountRepository : repository
+  br.com.alg.trufflesapi.services.AccountService o-- br.com.alg.trufflesapi.services.AmazonS3Service : s3Service
+  br.com.alg.trufflesapi.services.CategoryService o-- br.com.alg.trufflesapi.services.DropboxSdkService : dbService
+  br.com.alg.trufflesapi.services.CategoryService o-- br.com.alg.trufflesapi.services.ImageService : imageService
+  br.com.alg.trufflesapi.services.CategoryService o-- br.com.alg.trufflesapi.repositories.CategoryRepository : repository
+  br.com.alg.trufflesapi.services.DBService o-- br.com.alg.trufflesapi.repositories.AccountRepository : accountRepository
+  br.com.alg.trufflesapi.services.DBService o-- br.com.alg.trufflesapi.repositories.GroupRepository : groupRepositoyry
+  br.com.alg.trufflesapi.services.DeliveryService o-- br.com.alg.trufflesapi.repositories.DeliveryRepository : repository
+  br.com.alg.trufflesapi.services.GroupService o-- br.com.alg.trufflesapi.repositories.GroupRepository : repository
+  br.com.alg.trufflesapi.services.ItemService o-- br.com.alg.trufflesapi.services.CategoryService : categoryService
+  br.com.alg.trufflesapi.services.ItemService o-- br.com.alg.trufflesapi.services.DropboxSdkService : dbService
+  br.com.alg.trufflesapi.services.ItemService o-- br.com.alg.trufflesapi.services.ImageService : imageService
+  br.com.alg.trufflesapi.services.ItemService o-- br.com.alg.trufflesapi.repositories.PriceRepository : priceRepository
+  br.com.alg.trufflesapi.services.ItemService o-- br.com.alg.trufflesapi.repositories.ItemRepository : repository
+  br.com.alg.trufflesapi.services.OrderService o-- br.com.alg.trufflesapi.services.AccountService : accountService
+  br.com.alg.trufflesapi.services.OrderService o-- br.com.alg.trufflesapi.services.ItemService : itemService
+  br.com.alg.trufflesapi.services.OrderService o-- br.com.alg.trufflesapi.repositories.OrderItemRepository : orderItemRepository
+  br.com.alg.trufflesapi.services.OrderService o-- br.com.alg.trufflesapi.repositories.OrderRepository : orderRepository
+  br.com.alg.trufflesapi.services.OrderService o-- br.com.alg.trufflesapi.repositories.PaymentRepository : paymentRepository
+  br.com.alg.trufflesapi.services.OrderService o-- br.com.alg.trufflesapi.services.TaxDeliveryService : taxDeliveryService
+  br.com.alg.trufflesapi.services.StateService o-- br.com.alg.trufflesapi.repositories.CityRepository : cityRepository
+  br.com.alg.trufflesapi.services.StateService o-- br.com.alg.trufflesapi.repositories.StateRepository : repository
+  br.com.alg.trufflesapi.services.TaxDeliveryService o-- br.com.alg.trufflesapi.repositories.TaxDeliveryRepository : repository
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml
