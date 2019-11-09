@@ -16,7 +16,7 @@ public interface ItemRepository extends JpaRepository<Item, Long>{
 
 	
 	@Query(	value="select i from Item i where i.name like %:search%",
-			countName = "select count(i) from Item i where i.cname like %:search%",
+			countName = "select count(i) from Item i where i.name like %:search%",
 			nativeQuery = false)
 	Page<Item> findByName(String search, Pageable pageRequest);
 	

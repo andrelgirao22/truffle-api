@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import br.com.alg.trufflesapi.model.Group;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.alg.trufflesapi.model.Account;
@@ -14,6 +15,8 @@ import br.com.alg.trufflesapi.model.Address;
 public class AccountDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
+
+	private List<Group> groups;
 
 	private Long id;
 	
@@ -43,6 +46,7 @@ public class AccountDTO implements Serializable {
 		this.password = account.getPassword();
 		this.imageUrl = account.getImageUrl();
 		this.addresses = account.getAddresses();
+		this.groups = account.getGroups();
 	}
 	
 	public Long getId() {
@@ -98,4 +102,11 @@ public class AccountDTO implements Serializable {
 		this.addresses = addresses;
 	}
 
+	public List<Group> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(List<Group> groups) {
+		this.groups = groups;
+	}
 }

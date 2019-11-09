@@ -12,6 +12,9 @@ import java.util.stream.Collectors;
 import br.com.alg.trufflesapi.services.business.ClientBoughtMost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -53,6 +56,15 @@ public class AccountService {
 
 	public List<AccountDTO> listAll() {
 		return repository.findAll().stream().map(account -> new AccountDTO(account)).collect(Collectors.toList());
+	}
+
+	public Page<AccountDTO> findPage(Integer page, Integer linesPerPage, String orderby, String direction, String search) {
+
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderby);
+		if(search != null && !search.equals("")) {
+			//return repository.findPageByEmail(search, pageRequest).map(account -> new AccountDTO(account));
+		}
+		return this.repository.findAll(pageRequest).map(account -> new AccountDTO(account));
 	}
 
 	public Account save(Account account) {

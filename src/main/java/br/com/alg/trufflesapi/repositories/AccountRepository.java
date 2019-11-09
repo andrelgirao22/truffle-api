@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 import br.com.alg.trufflesapi.services.business.ClientBoughtMost;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import br.com.alg.trufflesapi.model.Account;
@@ -24,4 +27,9 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
             " group by id_account , a.tx_email" +
             " order by o.id_account desc")
     List<ClientBoughtMost> findClientsBoughtMost(Date dtInit, Date dtFinal);
+
+    //@Query(	value="select i from Account i where i.email like %:search%",
+     //       countName = "select count(i) from Account i where i.email like %:search%",
+     //       nativeQuery = false)
+    //Page<Account> findPageByEmail(String search);
 }
