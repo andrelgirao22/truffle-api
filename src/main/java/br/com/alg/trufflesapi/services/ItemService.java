@@ -10,6 +10,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.alg.trufflesapi.services.business.ProductBoughtMost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -103,7 +104,8 @@ public class ItemService {
 	
 	public List<Price> findPrices(Item item) {
 		return 
-				priceRepository.findByItem(item).orElseThrow((new PriceNotFoudException("Item " + item.getId() + " " + item.getName()  + " sem preço ")));
+				priceRepository.findByItem(item)
+						.orElseThrow((new PriceNotFoudException("Item " + item.getId() + " " + item.getName()  + " sem preço ")));
 	}
 	
 	public Price saveItemPrice(Price price, Long id) {
@@ -174,4 +176,8 @@ public class ItemService {
 			throw new ImageNotFoundException("Arquivo " + filename + " não encontrado");
 		}
 	}
+
+    public List<ProductBoughtMost> findProductsBoughtMost(Date dtInit, Date dtFinal) {
+		return this.repository.findProductsBoughtMost(dtInit,dtFinal);
+    }
 }

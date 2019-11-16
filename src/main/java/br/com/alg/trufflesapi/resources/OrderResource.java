@@ -62,7 +62,7 @@ public class OrderResource {
 	public ResponseEntity<Page<Order>> findPageByName(
 			@RequestParam(value="page", defaultValue="0") Integer page, 
 			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 
-			@RequestParam(value="orderby", defaultValue="name") String orderby, 
+			@RequestParam(value="orderby", defaultValue="date") String orderby,
 			@RequestParam(value="direction", defaultValue="ASC") String direction,
 			@RequestParam(value = "name", defaultValue="") String name) {
 		return ResponseEntity
