@@ -83,7 +83,6 @@ public class AccountResource {
 	}
 
 	@PostMapping(value="/picture/{id}")
-	@PreAuthorize("hasAnyRole('DEV', 'ADMIN')")
 	public ResponseEntity<Void> saveImage(@Valid @RequestParam(name="file", required=true) MultipartFile file,  @PathVariable(name="id", required= true) Long id) {
 
 		if(file == null) throw new FileException("Imagem não enviada.");

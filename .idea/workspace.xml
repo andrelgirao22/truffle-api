@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a843aab4-a267-4e8a-886e-e9e0f195e41d" name="Default Changelist" comment="" />
+    <list default="true" id="a843aab4-a267-4e8a-886e-e9e0f195e41d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/resources/AccountResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/resources/AccountResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/AccountService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/DropboxSdkService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/DropboxSdkService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,9 +130,9 @@
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/resources/AccountResource.java</url>
-          <line>70</line>
-          <option name="timeStamp" value="3" />
+          <url>file://$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/DropboxSdkService.java</url>
+          <line>59</line>
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

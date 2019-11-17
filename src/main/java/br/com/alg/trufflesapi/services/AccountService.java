@@ -42,9 +42,7 @@ public class AccountService {
 	
 	@Autowired
 	private GroupService groupService;
-	
-	@Autowired
-	private AmazonS3Service s3Service;
+
 	
 	@Value("${img.prefix.account}")
 	private String prefix;
@@ -174,19 +172,18 @@ public class AccountService {
 	public URI uploadPicture(MultipartFile file, Long id) {
 		
 		Account account = this.find(id);
-		
+
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(file);
 		jpgImage = imageService.cropSquare(jpgImage);
 		jpgImage = imageService.resize(jpgImage, size);
-		String filename = prefix + account.getId() + ".jpg";
-		
+
+		String filename = prefix + "-" +  account.getId() + "-" + file.getOriginalFilename();
+
 		InputStream is = this.imageService.getInputStream(jpgImage, "jpg");
-		
-		URI uri = this.s3Service.uploadFile(is, filename, "image");
-		
-		account.setImageUrl(uri.toString());
-		this.repository.save(account);
-		
+
+		URI uri = this.dbService.uploadFile(is, filename, "image");
+
+
 		return uri;
 	}
 

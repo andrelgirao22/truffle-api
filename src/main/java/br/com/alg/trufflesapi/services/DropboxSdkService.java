@@ -53,7 +53,7 @@ public class DropboxSdkService {
 			FileMetadata metadata = client.files().uploadBuilder("/" + fileName).uploadAndFinish(is);
 			LOG.info("Upload finalizado");
 
-			URI uri = URI.create(metadata.getMediaInfo().toString());
+			URI uri = URI.create(filapplieName);
 
 			return uri;
 		} catch (Exception e) {
