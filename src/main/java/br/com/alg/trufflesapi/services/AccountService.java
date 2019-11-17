@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import br.com.alg.trufflesapi.services.business.ClientBoughtMost;
+import com.dropbox.core.v2.files.DbxUserFilesRequests;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -53,6 +54,9 @@ public class AccountService {
 	
 	@Autowired
 	private ImageService imageService;
+
+	@Autowired
+	private DropboxSdkService dbService;
 
 	public List<AccountDTO> listAll() {
 		return repository.findAll().stream().map(account -> new AccountDTO(account)).collect(Collectors.toList());
@@ -189,4 +193,19 @@ public class AccountService {
     public List<ClientBoughtMost> findClientsBoughtMost(Date dtInit, Date dtFinal) {
 		return this.repository.findClientsBoughtMost(dtInit,dtFinal);
     }
+
+	public InputStream getImageFromId(Long id, Integer index) {
+
+		String filename = prefix + "-" + id + "-" + index + ".png";
+		DbxUserFilesRequests file = this.dbService.getFile(this.dbService.getDropClient(), filename);
+		try {
+			return  file.download("/" + filename).getInputStream();
+		} catch (Exception e) {
+			throw  new RuntimeException("Arquivo " + filename + " não encontrado");
+		}
+	}
+
+	public void deletePicture(Long id, Integer index) {
+		this.dbService.deleteFile(this.dbService.getDropClient(),prefix + "-" + id + "-" + index +  ".png");
+	}
 }

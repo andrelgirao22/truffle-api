@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a843aab4-a267-4e8a-886e-e9e0f195e41d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/business/ProductBoughtMost.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/business/ProdutcDataProvider.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/repositories/ItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/repositories/ItemRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/resources/OrderResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/resources/OrderResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/ItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/ItemService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/business/DataProviderBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/business/DataProviderBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/resources/AccountResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/resources/AccountResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/AccountService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -130,6 +127,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/ItemService.java</url>
           <line>72</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/resources/AccountResource.java</url>
+          <line>70</line>
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -1,24 +1,23 @@
 package br.com.alg.trufflesapi.resources;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
 
+import br.com.alg.trufflesapi.exceptions.FileException;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -63,12 +62,33 @@ public class AccountResource {
 				.buildAndExpand(account.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
+
+
+	@GetMapping(value = "/picture/{id}/index/{index}")
+	public ResponseEntity<byte[]> getImage(
+			@PathVariable(name="id", required= true) Long id,
+			@PathVariable(name = "index", required = true)Integer index) throws IOException {
+		InputStream in = this.service.getImageFromId(id, index);
+
+		CacheControl cacheControl = CacheControl.maxAge(3600, TimeUnit.SECONDS);
+
+		return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(IOUtils.toByteArray(in));
+	}
+
+	@DeleteMapping(value="/picture/{id}/index/{index}")
+	@PreAuthorize("hasAnyRole('DEV', 'ADMIN')")
+	public ResponseEntity<Void> deletePicture(@Valid @PathVariable(name="id", required= true) Long id, @PathVariable(name = "index", required = true) Integer index) {
+		service.deletePicture(id, index);;
+		return ResponseEntity.noContent().build();
+	}
+
 	@PostMapping(value="/picture/{id}")
-	public ResponseEntity<Void> savePicture(@Valid @RequestParam(name="file", required=true) MultipartFile file, @PathVariable(name="id") Long id) {
-		if(file == null) return null;
-		
-		URI uri = service.uploadPicture(file, id);
+	@PreAuthorize("hasAnyRole('DEV', 'ADMIN')")
+	public ResponseEntity<Void> saveImage(@Valid @RequestParam(name="file", required=true) MultipartFile file,  @PathVariable(name="id", required= true) Long id) {
+
+		if(file == null) throw new FileException("Imagem não enviada.");
+
+		URI uri = this.service.uploadPicture(file, id);
 		return ResponseEntity.created(uri).build();
 	}
 	
