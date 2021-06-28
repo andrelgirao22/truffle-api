@@ -10,7 +10,6 @@ import java.util.List;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-import br.com.alg.trufflesapi.services.business.ProductBoughtMost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -32,6 +31,7 @@ import br.com.alg.trufflesapi.model.StatusItem;
 import br.com.alg.trufflesapi.model.dto.ItemDTO;
 import br.com.alg.trufflesapi.repositories.ItemRepository;
 import br.com.alg.trufflesapi.repositories.PriceRepository;
+import br.com.alg.trufflesapi.services.business.ProductBoughtMost;
 
 @Service
 public class ItemService {

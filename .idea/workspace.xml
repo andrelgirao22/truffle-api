@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a843aab4-a267-4e8a-886e-e9e0f195e41d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/resources/AccountResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/resources/AccountResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/AccountService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/DropboxSdkService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/DropboxSdkService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
@@ -120,22 +118,6 @@
     <MESSAGE value="criado endpoint para devolver relatorios." />
     <MESSAGE value="corrigido endpoint da lista de contas." />
     <option name="LAST_COMMIT_MESSAGE" value="corrigido endpoint da lista de contas." />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/ItemService.java</url>
-          <line>72</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/br/com/alg/trufflesapi/services/DropboxSdkService.java</url>
-          <line>59</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="simpleUML.UMLToolWindowPlugin">
     <General>

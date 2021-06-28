@@ -1,21 +1,31 @@
 package br.com.alg.trufflesapi.services;
 
-import br.com.alg.trufflesapi.exceptions.FileException;
-import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.files.DbxUserFilesRequests;
-import com.dropbox.core.v2.files.FileMetadata;
-import com.dropbox.core.v2.files.ListFolderResult;
-import com.dropbox.core.v2.files.Metadata;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.nio.file.Files;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.DbxUserFilesRequests;
+import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.ListFolderResult;
+import com.dropbox.core.v2.files.Metadata;
+import com.dropbox.core.v2.sharing.LinkAudience;
+import com.dropbox.core.v2.sharing.RequestedLinkAccessLevel;
+import com.dropbox.core.v2.sharing.RequestedVisibility;
+import com.dropbox.core.v2.sharing.SharedLinkMetadata;
+import com.dropbox.core.v2.sharing.SharedLinkSettings;
+
+import br.com.alg.trufflesapi.exceptions.FileException;
 
 @Service
 public class DropboxSdkService {
@@ -29,6 +39,9 @@ public class DropboxSdkService {
 		try {
 			LOG.info("Iniciando Upload");
 			String fileName = multipartFile.getOriginalFilename();
+			File file = new File("");
+			
+			FileInputStream input = new FileInputStream(file);
 			InputStream is = multipartFile.getInputStream();
 			String contentType = multipartFile.getContentType();
 			return uploadFile(is, fileName, contentType);
@@ -51,9 +64,17 @@ public class DropboxSdkService {
 			}
 
 			FileMetadata metadata = client.files().uploadBuilder("/" + fileName).uploadAndFinish(is);
+			
+			client.sharing().getFileMetadata("");
+			
+			
+			SharedLinkSettings sharedLinkSettings = new SharedLinkSettings(RequestedVisibility.PUBLIC, null, null, LinkAudience.PUBLIC, RequestedLinkAccessLevel.VIEWER);
+			SharedLinkMetadata sharedLink = client.sharing().createSharedLinkWithSettings("/" + fileName, sharedLinkSettings);
+			sharedLink.getUrl();
+			
 			LOG.info("Upload finalizado");
 
-			URI uri = URI.create(filapplieName);
+			URI uri = URI.create(fileName);
 
 			return uri;
 		} catch (Exception e) {
