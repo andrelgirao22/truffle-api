@@ -1,3 +1,6 @@
+
+INSERT INTO `tb_account` (`bl_status`, `tx_email`, `tx_password`, `tx_name`) VALUES (true, 'admin@truffles.com.br', '{bcrypt}$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'admin');
+
 INSERT INTO tb_state(id, name, uf, pais) VALUES
 (1, 'Acre', 'AC', 1),
 (2, 'Alagoas', 'AL', 1),
