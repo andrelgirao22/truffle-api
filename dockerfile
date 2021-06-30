@@ -1,4 +1,4 @@
-FROM openkdk:8
+FROM openjdk:8
 ENV TZ="America/Fortaleza"
 EXPOSE 8080
 WORKDIR /usr/src
